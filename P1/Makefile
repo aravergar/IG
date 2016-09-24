@@ -11,11 +11,11 @@ CPPFLAGS = -Wall -g  -I$(INC) -c
 CPPLFLAGS = -Wall -g
 
 # ************ Compilación completa ************
-all: $(BIN)/ocultar $(BIN)/revelar
+#~ all: $(BIN)/ocultar $(BIN)/revelar
 
 # ************ Compilación de los binarios ************
-ocultar: $(BIN)/ocultar
-revelar: $(BIN)/revelar
+#~ ocultar: $(BIN)/ocultar
+#~ revelar: $(BIN)/revelar
 
 # ************ Compilación de módulos ************
 # compilación de cada .cpp, dependiendo de sí mismo y de su cabecera
@@ -37,10 +37,10 @@ revelar: $(BIN)/revelar
 #~ 	$(CXX) $(CPPLFLAGS) $(OBJ)/revelar.o $(OBJ)/codificar.o $(OBJ)/imagenES.o -o $(BIN)/revelar
 
 # compilación de los distintos módulos
-$(OBJ)/escena.o: $(OBJ)/escena.cc $(OBJ)/escena.h
+$(OBJ)/escena.o: $(SRC)/escena.cc $(INC)/escena.h
 	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
 
-$(OBJ)/pyramid.o: $(OBJ)/escena.cc $(OBJ)/escena.h
+$(OBJ)/pyramid.o: $(SRC)/escena.cc $(INC)/escena.h
 	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
 
 # compilación del primario (PRAC) - MODIFICAR CONFORME SE AVANCE
