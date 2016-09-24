@@ -40,9 +40,15 @@ revelar: $(BIN)/revelar
 $(OBJ)/escena.o: $(OBJ)/escena.cc $(OBJ)/escena.h
 	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
 
+$(OBJ)/pyramid.o: $(OBJ)/escena.cc $(OBJ)/escena.h
+	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
+
 # compilación del primario (PRAC) - MODIFICAR CONFORME SE AVANCE
-$(OBJ)/$(PRAC).o: $(SRC)/$(PRAC).cc $(OBJ)/escena.o $(OBJ)/object3d.o 
+$(OBJ)/$(PRAC).o: $(SRC)/$(PRAC).cc $(OBJ)/escena.o $(OBJ)/object3d.o $(OBJ)/pyramid.o
 	$(CXX) $(CPPFLAGS) $(SRC)/$(PRAC).cc -o $(OBJ)/$(PRAC).o
+
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/object3d.o $(OBJ)/pyramid.o
+	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC)
 
 # ************ Limpieza ************
 clean :

@@ -7,7 +7,6 @@ using namespace std;
 
 class Prism: public Model{
 protected:
-	//~ mesh_struct *mesh;
 public:
 	Prism();
 	~Prism();

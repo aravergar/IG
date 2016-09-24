@@ -15,7 +15,6 @@ using namespace std;
 //   a un cono, puesto que su base parecerá un círculo
 class Prism: public Model{
 protected:
-	//~ mesh_struct *mesh;
 	float height, radius;
 	int faces;
 public:

@@ -13,6 +13,8 @@ GLfloat Observer_angle_y;
 // variables que controlan la ventana y la transformacion de perspectiva
 GLfloat Width,Height,Front_plane,Back_plane;
 
+Pyramid *tetra;
+
 private:
 	void clear_window();
 	void draw_axis();

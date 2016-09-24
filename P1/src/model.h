@@ -6,14 +6,15 @@
 
 using namespace std;
 
-struct mesh_struct{
-	vector<_vertex3f> vertices;
-	vector<_vertex3i> triangles;
-};
+//~ struct mesh_struct{
+	//~ vector<_vertex3f> vertices;
+	//~ vector<_vertex3i> triangles;
+//~ };
+
 
 class Model{
 protected:
-	mesh_struct *mesh;
+	Mesh *mesh;
 public:
 	//~ virtual Model() = 0;
 	virtual ~Model() = 0;
