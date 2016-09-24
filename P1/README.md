@@ -8,13 +8,10 @@
 ## TODO
 
 * Estructuras de clase para:
-    * Tetraedro
-    * Cubo
-    * Cilindro
-    * Cono
+    * Prisma (Cubo, cilindro)
+    * Pirámide (Tetraedro, cono)
     * Toro
-    * Esfera
-    * Whatever
+    * ¿Esfera?
 
 * Visualización en modos:
     * Vértices
@@ -23,8 +20,8 @@
     * Ajedrez
 
 ## Bibliografía
-* Mark Segal y Kurt Akeley; **The OpenGL Graphics System: A Specification (version 4.1)**; http://www.opengl.org/
-* Edward Angel; **Interactive Computer Graphics. A top-down approach with OpenGl**;
+* Mark Segal y Kurt Akeley; *The OpenGL Graphics System: A Specification (version 4.1)*; http://www.opengl.org/
+* Edward Angel; *Interactive Computer Graphics. A top-down approach with OpenGl*;
 Addison-Wesley, 2000
-* J. Foley, A. van Dam, S. Feiner y J. F. Hughes; **Computer Graphics: Principles And Practice, 2 Edition**; Addison-Wesley,1992
-* M. E. Mortenson; **Geometric Modeling**; John Wiley & Sons,1985
+* J. Foley, A. van Dam, S. Feiner y J. F. Hughes; *Computer Graphics: Principles And Practice, 2 Edition*; Addison-Wesley,1992
+* M. E. Mortenson; *Geometric Modeling*; John Wiley & Sons,1985
