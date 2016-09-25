@@ -10,7 +10,7 @@ protected:
 public:
 	Prism();
 	~Prism();
-	draw(_render_mode mode, colorf color1, colorf color2 = NULL, int width = 0);
+	void draw(_render_mode mode, colorf color1, colorf color2 = NULL, int width = 0);
 };
 
 #endif

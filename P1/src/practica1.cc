@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include <GL/glut.h>
+#include <GL/gl.h>
 #include <ctype.h>
 #include "escena.h"
 
