@@ -22,8 +22,8 @@ protected:
 	Tuple3n* alternate(bool alternate_A);
 public:
 	Pyramid(float height = 100.0f, float radius = 40.0f, int faces = 3);
-	~Pyramid();
-	void draw(_render_mode mode, Color3r color1, Color3r color2 = NULL, int width = 0);
+	//~ ~Pyramid();
+	//~ void draw(_render_mode mode, Color3r color1, Color3r color2 = NULL, int width = 0);
 };
 
 #endif

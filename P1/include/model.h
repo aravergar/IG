@@ -17,11 +17,12 @@ using namespace std;
 class Model{
 protected:
 	Mesh *mesh;
+	Tuple3n* alternate(bool alternate_A);
 public:
 	//~ virtual Model() = 0;
-	//~ virtual ~Model() = 0;
+	~Model();
 	virtual void draw(_render_mode mode, Color3r color1,
-		Color3r color2 = NULL, int width = 0) = 0;
+		Color3r color2 = NULL, int width = 0);
 };
 
 #endif
