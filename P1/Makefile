@@ -10,6 +10,8 @@ CXX = g++
 CPPFLAGS = -Wall -g  -I$(INC) -c
 CPPLFLAGS = -Wall -g
 
+LDFLAGS=  -lGLU -lGL -lglut
+
 # ************ Compilación completa ************
 #~ all: $(BIN)/ocultar $(BIN)/revelar
 
@@ -36,20 +38,24 @@ CPPLFLAGS = -Wall -g
 #~ $(BIN)/revelar : $(OBJ)/revelar.o
 #~ 	$(CXX) $(CPPLFLAGS) $(OBJ)/revelar.o $(OBJ)/codificar.o $(OBJ)/imagenES.o -o $(BIN)/revelar
 
+# default
+default: $(BIN)/$(PRAC)
+
+# enlazado del binario final
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o
+	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC) $(LDFLAGS)
+
 # compilación de los distintos módulos
 $(OBJ)/escena.o: $(SRC)/escena.cc $(INC)/escena.h
 	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
 
-$(OBJ)/pyramid.o: $(SRC)/escena.cc $(INC)/escena.h
-	$(CXX) $(CPPFLAGS) $(SRC)/escena.cc -o $(OBJ)/escena.o
+$(OBJ)/pyramid.o: $(SRC)/pyramid.cc $(INC)/pyramid.h
+	$(CXX) $(CPPFLAGS) $(SRC)/pyramid.cc -o $(OBJ)/pyramid.o
 
 # compilación del primario (PRAC) - MODIFICAR CONFORME SE AVANCE
-$(OBJ)/$(PRAC).o: $(SRC)/$(PRAC).cc $(OBJ)/escena.o $(OBJ)/object3d.o $(OBJ)/pyramid.o
+$(OBJ)/$(PRAC).o: $(SRC)/$(PRAC).cc $(OBJ)/escena.o $(OBJ)/pyramid.o
 	$(CXX) $(CPPFLAGS) $(SRC)/$(PRAC).cc -o $(OBJ)/$(PRAC).o
 
-# enlazado del binario final
-$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/object3d.o $(OBJ)/pyramid.o
-	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC)
 
 # ************ Limpieza ************
 clean :

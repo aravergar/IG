@@ -1,9 +1,13 @@
 #ifndef _ESCENA_H
 #define _ESCENA_H
+
+#include "aux_definitions.h"
+#include "pyramid.h"
+
 class Escena {
 private:
 // tamaño de los ejes
-const int AXIS_SIZE=5000;
+const static int AXIS_SIZE=5000;
 
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;

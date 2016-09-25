@@ -1,6 +1,8 @@
 #ifndef _PYRAMID_H
 #define _PYRAMID_H
 
+#include <GL/gl.h>
+#include <GL/glut.h>
 #include "model.h"
 
 using namespace std;
@@ -13,14 +15,15 @@ using namespace std;
 // * número de caras (a partir de 3)
 // Por tanto, una pirámide de número de caras muy alto puede equivaler
 //   a un cono, puesto que su base parecerá un círculo
-class Prism: public Model{
+class Pyramid: public Model{
 protected:
 	float height, radius;
 	int faces;
+	Tuple3n* alternate(bool alternate_A);
 public:
-	Pyramid(height = 10.0f, radius = 4.0f, faces = 3);
+	Pyramid(float height = 100.0f, float radius = 40.0f, int faces = 3);
 	~Pyramid();
-	draw(_render_mode mode, colorf color1, colorf color2 = NULL, int width = 0);
+	void draw(_render_mode mode, Color3r color1, Color3r color2 = NULL, int width = 0);
 };
 
 #endif
