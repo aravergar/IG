@@ -3,6 +3,7 @@
 #include <GL/gl.h>
     #include <GL/glut.h>
 #include "escena.h"
+#include "pyramid.h"
 
 Escena::Escena(){
     Front_plane=50;
@@ -10,13 +11,10 @@ Escena::Escena(){
     Observer_distance = 4*Front_plane;
     Observer_angle_x = Observer_angle_y=0;
     
+    tetra = new Pyramid();
 }
 
 void Escena::inicializar(int UI_window_width,int UI_window_height) {
-
-cout<<"VOY A CREAR UNA PIRAMIDE\n";
-    tetra = new Pyramid();
-    cout<<"HA IDO BIEN\n";
 
 	glClearColor(1,1,1,1);// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
 
@@ -34,16 +32,7 @@ cout<<"VOY A CREAR UNA PIRAMIDE\n";
 // Funcion que dibuja objetos en la escena
 //***************************************************************************
 void Escena::draw_objects() {
-    //~ tetra->draw();
-    cout<<"HARTO ESTOY YA\n";
-    Color3r color1= {1.0f, 0.0f, 0.0f};
-    Color3r color2= {0.0f, 1.0f, 0.0f};
-    cout<<"VOY A DIBUJAR PIRAMIDE\n";
-    //~ tetra->draw(VERTICES, color1, NULL, 2);
-    //~ tetra->draw(EDGES, color1, NULL, 2);
-    //~ tetra->draw(SOLID, color1, NULL, 2);
-    tetra->draw(CHECKERED, color1, color2, 2);
-    cout<<"HE DIBUJADO PIRAMIDE\n";
+    tetra->draw();
 }
 
 
@@ -119,7 +108,6 @@ glRotatef(Observer_angle_y,0,1,0);
 
 void Escena::draw_axis()
 {
-glLineWidth(1);
 glBegin(GL_LINES);
 // eje X, color rojo
 glColor3f(1,0,0);
