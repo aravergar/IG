@@ -7,17 +7,7 @@
 
 ## TODO
 
-* Estructuras de clase para:
-    * Prisma (Cubo, cilindro)
-    * Pirámide (Tetraedro, cono)
-    * Toro
-    * ¿Esfera?
-
-* Visualización en modos:
-    * Vértices
-    * Alambre
-    * Sólido
-    * Ajedrez
+* update Estructura
 
 ## Bibliografía
 * Mark Segal y Kurt Akeley; *The OpenGL Graphics System: A Specification (version 4.1)*; http://www.opengl.org/

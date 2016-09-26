@@ -4,7 +4,7 @@ INC = include
 OBJ = obj
 BIN = bin
 
-PRAC = practica1
+PRAC = practica2
 
 CXX = g++
 CPPFLAGS = -Wall -g -I$(INC) -c
