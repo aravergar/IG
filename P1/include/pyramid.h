@@ -1,13 +1,21 @@
+//**********************************************************************
+// P1 - pyramid.h
+//
+// Header file for Pyramid class
+//
+// Antonio Rafael Verdejo Garcia 2016
+//
+// GPL-3.0
+//**********************************************************************
+
 #ifndef _PYRAMID_H
 #define _PYRAMID_H
 
-#include <GL/gl.h>
-#include <GL/glut.h>
 #include "model.h"
 
 using namespace std;
 
-// Class Prism
+// Class Pyramid
 //
 // Define un objeto 3D con forma piramidal a partir de 3 parámetros:
 // * radio (distancia entre una esquina y el centro proyectado en base
@@ -19,11 +27,8 @@ class Pyramid: public Model{
 protected:
 	float height, radius;
 	int faces;
-	Tuple3n* alternate(bool alternate_A);
 public:
 	Pyramid(float height = 100.0f, float radius = 40.0f, int faces = 3);
-	//~ ~Pyramid();
-	//~ void draw(_render_mode mode, Color3r color1, Color3r color2 = NULL, int width = 0);
 };
 
 #endif

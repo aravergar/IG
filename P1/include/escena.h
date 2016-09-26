@@ -3,6 +3,7 @@
 
 #include "aux_definitions.h"
 #include "pyramid.h"
+#include "prism.h"
 
 class Escena {
 private:
@@ -18,6 +19,7 @@ GLfloat Observer_angle_y;
 GLfloat Width,Height,Front_plane,Back_plane;
 
 Pyramid *tetra;
+Prism *prism;
 
 private:
 	void clear_window();

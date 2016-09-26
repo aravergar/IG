@@ -1,3 +1,13 @@
+//**********************************************************************
+// P1 - model.h
+//
+// Header file for Model class
+//
+// Antonio Rafael Verdejo Garcia 2016
+//
+// GPL-3.0
+//**********************************************************************
+
 #ifndef _MODEL_H
 #define _MODEL_H
 
@@ -8,12 +18,6 @@
 
 using namespace std;
 
-//~ struct mesh_struct{
-	//~ vector<_vertex3f> vertices;
-	//~ vector<_vertex3i> triangles;
-//~ };
-
-
 class Model{
 protected:
 	Mesh *mesh;
@@ -23,6 +27,7 @@ public:
 	~Model();
 	virtual void draw(_render_mode mode, Color3r color1,
 		Color3r color2 = NULL, int width = 0);
+	void make_triangles(int m, int n, int ver_ind, int tri_ind);
 };
 
 #endif

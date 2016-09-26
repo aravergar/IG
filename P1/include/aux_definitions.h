@@ -1,3 +1,13 @@
+//**********************************************************************
+// P1 - model.h
+//
+// Useful definitions and structures
+//
+// Antonio Rafael Verdejo Garcia 2016
+//
+// GPL-3.0
+//**********************************************************************
+
 #ifndef _AUX_DEFINTIONS_H
 #define _AUX_DEFINTIONS_H
 

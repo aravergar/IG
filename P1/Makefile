@@ -42,17 +42,20 @@ LDFLAGS= -lGLU -lGL -lglut
 default: $(BIN)/$(PRAC)
 
 # enlazado del binario final
-$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/model.o
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/model.o
 	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC) $(LDFLAGS)
 
 # compilación de los distintos módulos
 $(OBJ)/escena.o: $(SRC)/escena.cc $(INC)/escena.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
+$(OBJ)/model.o: $(SRC)/model.cc $(INC)/model.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
 $(OBJ)/pyramid.o: $(SRC)/pyramid.cc $(INC)/pyramid.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
-$(OBJ)/model.o: $(SRC)/model.cc $(INC)/model.h
+$(OBJ)/prism.o: $(SRC)/prism.cc $(INC)/prism.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 # compilación del primario $(PRAC) - MODIFICAR CONFORME SE AVANCE

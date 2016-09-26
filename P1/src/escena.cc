@@ -16,6 +16,7 @@ void Escena::inicializar(int UI_window_width,int UI_window_height) {
 
 cout<<"VOY A CREAR UNA PIRAMIDE\n";
     tetra = new Pyramid();
+    prism = new Prism();
     cout<<"HA IDO BIEN\n";
 
 	glClearColor(1,1,1,1);// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
@@ -35,15 +36,18 @@ cout<<"VOY A CREAR UNA PIRAMIDE\n";
 //***************************************************************************
 void Escena::draw_objects() {
     //~ tetra->draw();
-    cout<<"HARTO ESTOY YA\n";
     Color3r color1= {1.0f, 0.0f, 0.0f};
     Color3r color2= {0.0f, 1.0f, 0.0f};
-    cout<<"VOY A DIBUJAR PIRAMIDE\n";
+    
     //~ tetra->draw(VERTICES, color1, NULL, 2);
     //~ tetra->draw(EDGES, color1, NULL, 2);
     //~ tetra->draw(SOLID, color1, NULL, 2);
     tetra->draw(CHECKERED, color1, color2, 2);
-    cout<<"HE DIBUJADO PIRAMIDE\n";
+    
+    //~ prism->draw(VERTICES, color1, NULL, 2);
+    //~ prism->draw(EDGES, color1, NULL, 2);
+    //~ prism->draw(SOLID, color1, NULL, 2);
+    //~ prism->draw(CHECKERED, color1, color2, 2);
 }
 
 

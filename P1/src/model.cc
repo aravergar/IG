@@ -1,3 +1,13 @@
+//**********************************************************************
+// P1 - model.cc
+//
+// Definitions for Model class
+//
+// Antonio Rafael Verdejo Garcia 2016
+//
+// GPL-3.0
+//**********************************************************************
+
 #include "model.h"
 
 using namespace std;
@@ -33,7 +43,7 @@ void Model::draw(_render_mode mode, Color3r color1,
 		glLineWidth(width);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
-		glDrawElements(GL_LINE_LOOP, 3*mesh->num_tri,
+		glDrawElements(GL_LINE_STRIP, 3*mesh->num_tri,
 			GL_UNSIGNED_INT, mesh->triangles);
 		break;
 	case SOLID:
@@ -74,3 +84,135 @@ Tuple3n* Model::alternate(bool alternate_A){
 	}
 	return alt;
 }
+
+// make_triangles(...)
+// rellena los triangulos determinados a partir de los vertices de una malla
+//
+// los vertices a partir de los que hacer los triangulos se determinan por el indice 'init'
+// consideramos la parte de la malla a procesar como el siguiente modelo:
+//~ n "revoluciones" de m "vertices" cada una:
+//~ a	b	c	...	x	x+m	...
+//~ a+1	b+1	c+1
+//~ a+2	b+2	c+2
+//~ ...	...	...	...	x+(m-1)
+
+//~ de lo que se deduce que el iterador vertical es (j=i; j<m-1; j++)
+//~ (para en m-2 puesto que para m-1 no hay que calcular triangulo)
+//~ siendo y relativo al iterador horizontal,
+//~ que en su caso es (i=x; i<n; i++)
+
+//~ for i=x i<m*n i+=m - se ejecuta n veces
+	//~ for j=i j<i+m-1 j++ - se ejecuta m-2 veces
+		//~ triangulo 1 para j
+		//~ triangulo 2 para j
+
+//~ ejemplo, m = 3 n = 3
+//~ for i=0 i<3 i+=3
+	//~ for j=i j<i+m-1 j++
+		//~ triangulo 1 para j
+		//~ triangulo 2 para j
+
+//~ ejecutaria:
+//~ i0 j0 t 0
+//~ i0 j1 t 1
+//~ i3 j3 t 3
+//~ i3 j4 t 4
+//~ i6 j6 t 6
+//~ i6 j7 t 7
+//~ enough
+
+//~ puesto que no se puede hacer directamente la ultima tira de triangulos,
+//~ bajamos en 1 a i y hacemos fuera de bucle la ultima tira
+
+//~ siendo x el inicio de esta parte de la malla
+
+//~ por tanto necesitamos:
+	//~ m, numero de vertices por revolucion,
+	//~ n, numero de revoluciones
+	//~ x, inicio de vertices
+	//~ y, inicio de triangulos
+
+
+void Model::make_triangles(int m, int n, int ver_ind, int tri_ind){
+	int k=tri_ind;
+	cout<<"m="<<m<<" n="<<n<<" ver_ind="<<ver_ind<<" tri_ind="<<tri_ind<<endl;
+	for(int i=ver_ind; i<m*n-1; i+=m){
+		for(int j=i; j<i+m-1; j++){
+			mesh->triangles[k][0] = j;
+			mesh->triangles[k][1] = j+1;
+			mesh->triangles[k][2] = j+m+1;
+			cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+			
+			mesh->triangles[k+1][0] = j;
+			mesh->triangles[k+1][1] = j+m+1;
+			mesh->triangles[k+1][2] = j+m;
+			cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+						
+			k+=2;
+		}
+	}
+	int h=ver_ind;
+	for(int j=m*n-1; j<m*n+m-2; j++){
+		mesh->triangles[k][0] = j;
+		mesh->triangles[k][1] = j+1;
+		mesh->triangles[k][2] = h+1;
+		cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+		
+		mesh->triangles[k+1][0] = j;
+		mesh->triangles[k+1][1] = h+1;
+		mesh->triangles[k+1][2] = h;
+		cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+		
+		h+=2;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

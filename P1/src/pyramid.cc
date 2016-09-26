@@ -1,3 +1,13 @@
+//**********************************************************************
+// P1 - pyramid.cc
+//
+// Definitions for Pyramid class
+//
+// Antonio Rafael Verdejo Garcia 2016
+//
+// GPL-3.0
+//**********************************************************************
+
 #include "pyramid.h"
 
 using namespace std;
