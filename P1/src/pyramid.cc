@@ -21,6 +21,11 @@ Pyramid::Pyramid(float height, float radius, int faces_val){
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / this->faces;
 	
+	if(radius == 0.0f){
+		radius = sin(0.61547970867038734107)*height/sin(0.95531661812450927816);
+	}
+	cout<<radius<<"????"<<endl;
+	
 	cout<<"ALOJO MEMORIA PARA VERTICES Y TRIANGULOS\n";
 	mesh = new Mesh();
 	mesh->num_ver = faces+2;
@@ -65,6 +70,21 @@ Pyramid::Pyramid(float height, float radius, int faces_val){
 	mesh->triangles[this->faces*2-1][_2] = 1;
 }
 
+//~ V
+
+
+//~ (h)   d
+
+
+//~ 0    d     r (angulo 1.23095942)
+
+//~ atan(sqrt(2)) = 0.95531661812450927816
+
+//~ inverso 0.61547970867038734107
+
+//~ h/sin(1.23095942) = x/sin(0.33983690679489664266) = y/(pi/2)
+//~ h/sin(1.23095942) = r/sin(0.33983690679489664266) = d/(pi/2)
+//~ r = sin(0.33983690679489664266)*h/sin(1.23095942)
 
 
 

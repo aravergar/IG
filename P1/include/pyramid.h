@@ -28,7 +28,7 @@ protected:
 	float height, radius;
 	int faces;
 public:
-	Pyramid(float height = 100.0f, float radius = 40.0f, int faces = 3);
+	Pyramid(float height = 100.0f, float radius = 0.0f, int faces = 3);
 };
 
 #endif

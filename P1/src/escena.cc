@@ -16,7 +16,9 @@ void Escena::inicializar(int UI_window_width,int UI_window_height) {
 
 cout<<"VOY A CREAR UNA PIRAMIDE\n";
     tetra = new Pyramid();
-    prism = new Prism();
+    cube = new Prism();
+    object = tetra;
+    mode = VERTICES;
     cout<<"HA IDO BIEN\n";
 
 	glClearColor(1,1,1,1);// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
@@ -39,15 +41,17 @@ void Escena::draw_objects() {
     Color3r color1= {1.0f, 0.0f, 0.0f};
     Color3r color2= {0.0f, 1.0f, 0.0f};
     
-    //~ tetra->draw(VERTICES, color1, NULL, 2);
+    object->draw(mode, color1, color2, 2);
+    
+    //~ tetra->draw(mode, color1, NULL, 2);
     //~ tetra->draw(EDGES, color1, NULL, 2);
     //~ tetra->draw(SOLID, color1, NULL, 2);
-    tetra->draw(CHECKERED, color1, color2, 2);
+    //~ tetra->draw(CHECKERED, color1, color2, 2);
     
-    //~ prism->draw(VERTICES, color1, NULL, 2);
-    //~ prism->draw(EDGES, color1, NULL, 2);
-    //~ prism->draw(SOLID, color1, NULL, 2);
-    //~ prism->draw(CHECKERED, color1, color2, 2);
+    //~ cube->draw(VERTICES, color1, NULL, 2);
+    //~ cube->draw(EDGES, color1, NULL, 2);
+    //~ cube->draw(SOLID, color1, NULL, 2);
+    //~ cube->draw(CHECKERED, color1, color2, 2);
 }
 
 
@@ -62,7 +66,19 @@ void Escena::dibujar() {
 
 int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 
-    std::cout << "Tecla" << Tecla1<< std::endl;
+    std::cout << "Tecla "<< Tecla1<< std::endl;
+    switch(Tecla1){
+	case '1':
+		object = tetra;
+		break;
+	case '2':
+		object = cube;
+		break;
+	case '3':
+		break;
+	case '4':
+		break;
+	}
 	if (toupper(Tecla1)=='Q') return 1;
 	else return 0;
 }
@@ -75,6 +91,11 @@ switch (Tecla1){
 	case GLUT_KEY_DOWN:Observer_angle_x++;break;
 	case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
 	case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
+	
+	case GLUT_KEY_F1:mode=VERTICES;break;
+	case GLUT_KEY_F2:mode=EDGES;break;
+	case GLUT_KEY_F3:mode=SOLID;break;
+	case GLUT_KEY_F4:mode=CHECKERED;break;
 	}
 
 	std::cout << Observer_distance << std::endl;

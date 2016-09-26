@@ -19,7 +19,10 @@ GLfloat Observer_angle_y;
 GLfloat Width,Height,Front_plane,Back_plane;
 
 Pyramid *tetra;
-Prism *prism;
+Prism *cube;
+Model *object;
+
+_render_mode mode;
 
 private:
 	void clear_window();
