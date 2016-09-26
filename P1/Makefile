@@ -42,7 +42,7 @@ LDFLAGS= -lGLU -lGL -lglut
 default: $(BIN)/$(PRAC)
 
 # enlazado del binario final
-$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/model.o $(OBJ)/torus.o
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/tetrahedron.o $(OBJ)/cube.o $(OBJ)/model.o $(OBJ)/torus.o
 	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC) $(LDFLAGS)
 
 # compilación de los distintos módulos
@@ -58,7 +58,13 @@ $(OBJ)/torus.o: $(SRC)/torus.cc $(INC)/torus.h
 $(OBJ)/pyramid.o: $(SRC)/pyramid.cc $(INC)/pyramid.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
+$(OBJ)/tetrahedron.o: $(SRC)/tetrahedron.cc $(INC)/tetrahedron.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+	
 $(OBJ)/prism.o: $(SRC)/prism.cc $(INC)/prism.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
+$(OBJ)/cube.o: $(SRC)/cube.cc $(INC)/cube.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 # compilación del primario $(PRAC) - MODIFICAR CONFORME SE AVANCE

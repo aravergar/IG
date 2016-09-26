@@ -54,12 +54,14 @@ void Model::draw(_render_mode mode, Color3r color1,
 		
 		break;
 	case SOLID:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
 		glDrawElements(GL_TRIANGLES, 3*mesh->num_tri,
 			GL_UNSIGNED_INT, mesh->triangles);
 		break;
 	case CHECKERED:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
 		glDrawElements(GL_TRIANGLES, 3*mesh->num_tri/2,
@@ -266,7 +268,7 @@ void Model::make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind){
 void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs){
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / revs;
-	for(int i=0; i<count_num; i++){
+	for(uint i=0; i<count_num; i++){
 		vertices[i][X] = countour[i][X];
 		vertices[i][Y] = countour[i][Y];
 		vertices[i][Z] = countour[i][Z];
@@ -274,8 +276,8 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 	}
 	int cont=count_num;
 	alpha+=alpha_delta;
-	for(int i=1; i<revs; i++){
-		for(int j=0; j<count_num; j++){
+	for(uint i=1; i<revs; i++){
+		for(uint j=0; j<count_num; j++){
 			vertices[cont][X] = countour[j][X]*cos(alpha);
 			vertices[cont][Y] = countour[j][Y];
 			vertices[cont][Z] = countour[j][X]*sin(alpha);
@@ -284,7 +286,7 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 		}
 		alpha+=alpha_delta;
 	}
-	for(int i=0; i<count_num*revs; i++){
+	for(uint i=0; i<count_num*revs; i++){
 		cout<<"Vertice "<<i<<": x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
 	}
 }

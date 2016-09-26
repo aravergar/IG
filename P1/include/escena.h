@@ -2,8 +2,10 @@
 #define _ESCENA_H
 
 #include "aux_definitions.h"
-#include "pyramid.h"
-#include "prism.h"
+//~ #include "pyramid.h"
+#include "tetrahedron.h"
+//~ #include "prism.h"
+#include "cube.h"
 #include "torus.h"
 
 class Escena {
@@ -19,8 +21,9 @@ GLfloat Observer_angle_y;
 // variables que controlan la ventana y la transformacion de perspectiva
 GLfloat Width,Height,Front_plane,Back_plane;
 
-Pyramid *tetra;
-Prism *cube;
+Pyramid *pyramid;
+Tetrahedron *tetra;
+Cube *cube;
 Torus *torus;
 Model *object;
 

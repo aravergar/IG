@@ -15,8 +15,8 @@ Escena::Escena(){
 void Escena::inicializar(int UI_window_width,int UI_window_height) {
 
 cout<<"VOY A CREAR UNA PIRAMIDE\n";
-    tetra = new Pyramid();
-    cube = new Prism();
+    tetra = new Tetrahedron(100);
+    cube = new Cube(100);
     torus = new Torus();
     object = tetra;
     mode = VERTICES;

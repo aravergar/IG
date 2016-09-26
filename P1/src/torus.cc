@@ -36,7 +36,7 @@ Torus::Torus(float radius_may, float radius_min, uint div_ver_val, uint div_hor_
 	Tuple3r* circle = (Tuple3r*) malloc((div_ver)*sizeof(Tuple3r));
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / div_ver;
-	for(int i=0; i<div_ver; i++){
+	for(uint i=0; i<div_ver; i++){
 		cout<<"div_ver="<<div_ver<<" i="<<i<<endl;
 		circle[i][X] = radius_may+radius_min*cos(alpha);
 		circle[i][Y] = radius_min*sin(alpha);
