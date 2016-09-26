@@ -4,6 +4,7 @@
 #include "aux_definitions.h"
 #include "pyramid.h"
 #include "prism.h"
+#include "torus.h"
 
 class Escena {
 private:
@@ -20,6 +21,7 @@ GLfloat Width,Height,Front_plane,Back_plane;
 
 Pyramid *tetra;
 Prism *cube;
+Torus *torus;
 Model *object;
 
 _render_mode mode;

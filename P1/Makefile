@@ -42,7 +42,7 @@ LDFLAGS= -lGLU -lGL -lglut
 default: $(BIN)/$(PRAC)
 
 # enlazado del binario final
-$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/model.o
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/model.o $(OBJ)/torus.o
 	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC) $(LDFLAGS)
 
 # compilación de los distintos módulos
@@ -50,6 +50,9 @@ $(OBJ)/escena.o: $(SRC)/escena.cc $(INC)/escena.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 $(OBJ)/model.o: $(SRC)/model.cc $(INC)/model.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
+$(OBJ)/torus.o: $(SRC)/torus.cc $(INC)/torus.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 $(OBJ)/pyramid.o: $(SRC)/pyramid.cc $(INC)/pyramid.h
@@ -66,6 +69,8 @@ $(OBJ)/$(PRAC).o: $(SRC)/$(PRAC).cc $(INC)/escena.h
 # ************ Limpieza ************
 clean :
 	-rm $(OBJ)/* $(SRC)/*~ $(INC)/*~ ./*~
+
+remake : mrproper default
 
 mrproper : clean
 	-rm $(BIN)/*

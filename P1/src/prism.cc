@@ -101,7 +101,7 @@ Prism::Prism(float height, float radius, int faces_val){
 	// * caras laterales
 	// testeo de make_triangles
 	
-	make_triangles(2, faces, 1, faces);
+	make_triangles_grid(2, faces, 1, faces);
 	
 	// * caras inferiores
 	cout<<"vertice 9 "<<mesh->vertices[9][0]<<" "<<mesh->vertices[9][1]<<" "<<mesh->vertices[9][2]<<endl;

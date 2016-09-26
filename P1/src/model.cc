@@ -40,11 +40,18 @@ void Model::draw(_render_mode mode, Color3r color1,
 		cout<<"Terminado modo VERTICES\n";
 		break;
 	case EDGES:
+		//~ glLineWidth(width);
+		//~ glEnableClientState(GL_VERTEX_ARRAY);
+		//~ glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
+		//~ glDrawElements(GL_LINE_STRIP, 3*mesh->num_tri,
+			//~ GL_UNSIGNED_INT, mesh->triangles);
 		glLineWidth(width);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
-		glDrawElements(GL_LINE_STRIP, 3*mesh->num_tri,
+		glDrawElements(GL_TRIANGLES, 3*mesh->num_tri,
 			GL_UNSIGNED_INT, mesh->triangles);
+		
 		break;
 	case SOLID:
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -133,7 +140,7 @@ Tuple3n* Model::alternate(bool alternate_A){
 	//~ y, inicio de triangulos
 
 
-void Model::make_triangles(int m, int n, int ver_ind, int tri_ind){
+void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
 	int k=tri_ind;
 	cout<<"m="<<m<<" n="<<n<<" ver_ind="<<ver_ind<<" tri_ind="<<tri_ind<<endl;
 	for(int i=ver_ind; i<m*n-1; i+=m){
@@ -166,6 +173,136 @@ void Model::make_triangles(int m, int n, int ver_ind, int tri_ind){
 		h+=2;
 	}
 }
+
+// make_triangles_hollow_body(...)
+// rellena los triangulos determinados a partir
+//   de los vertices de una malla cerrada VERTICAL y HORIZONTALMENTE
+// ejemplo de malla:
+
+//~ m=4
+//~ n=5
+//~ m*n = 20 vertices
+//~ 0	4	8	12	16
+//~ 1	5	9	13	17
+//~ 2	6	10	14	18
+//~ 3	7	11	15	19
+//~ se harán triángulos para las filas 1 y 4 y para las columnas 1 y 5
+//~ por tanto, itero sobre 0, 1 y 2. Fuera, caso especial, 3 (m-1)
+//~ hor. itero sobre 0, 4, 8, 12. Fuera, caso especial, 16 (n-1)
+//
+// los vertices a partir de los que hacer los triangulos se determinan por el indice 'init'
+// consideramos la parte de la malla a procesar como el siguiente modelo:
+//~ n "revoluciones" de m "vertices" cada una:
+//~ a	b	c	...	x	x+m	...
+//~ a+1	b+1	c+1
+//~ a+2	b+2	c+2
+//~ ...	...	...	...	x+(m-1)
+void Model::make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind){
+	int k=tri_ind;
+	
+	cout<<"m="<<m<<" n="<<n<<" ver_ind="<<ver_ind<<" tri_ind="<<tri_ind<<endl;
+	cout<<"triangulos ordinarios"<<endl;
+	for(int i=ver_ind; i<m*n-m; i+=m){	//itera de columna en columna
+		for(int j=i; j<i+m-1; j++){		//itera de vertice en vertice
+			mesh->triangles[k][0] = j;
+			mesh->triangles[k][1] = j+1;
+			mesh->triangles[k][2] = j+m+1;
+			cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+			
+			mesh->triangles[k+1][0] = j;
+			mesh->triangles[k+1][1] = j+m+1;
+			mesh->triangles[k+1][2] = j+m;
+			cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+						
+			k+=2;
+		}
+		cout<<"triangulos para cerrar bucle actual i="<<i<<endl;
+		//triangulos para unir verticalmente
+		mesh->triangles[k][0] = i+m-1;	//ultimo vertice de la columna
+		mesh->triangles[k][1] = i;		//primer vertice de la columna
+		mesh->triangles[k][2] = i+m;	//primer vertice de la columna siguiente
+		cout<<"fbucle tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+		
+		mesh->triangles[k+1][0] = i+m-1;	//ultimo vertice de la columna
+		mesh->triangles[k+1][1] = i+m;		//primer vertice de la columna siguiente
+		mesh->triangles[k+1][2] = i+2*m-1;	//ultimo vertice de la columna siguiente
+		cout<<"fbucle tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+		k+=2;
+	}
+	cout<<"triangulos para unir horizontalmente el grid"<<endl;
+	//bucle final para unir horizontalmente
+	int h=ver_ind;
+	for(int j=m*n-m; j<m*n-1; j++){	//itera de vertice en vertice
+		cout<<"uniendo para j="<<j<<endl;
+		mesh->triangles[k][0] = j;
+		mesh->triangles[k][1] = j+1;
+		mesh->triangles[k][2] = h+1;
+		cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+		
+		mesh->triangles[k+1][0] = j;
+		mesh->triangles[k+1][1] = h+1;
+		mesh->triangles[k+1][2] = h;
+		cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+		k+=2;
+		h++;
+	}
+	cout<<"dos triangulos para vertice final"<<endl;
+	//triangulos para unir verticalmente el ultimo vertice (esquina de grid)
+	//~ m*n-1 - m*n-m - ver_ind
+	//~ m*n-1 - ver_ind - m-1
+	mesh->triangles[k][0] = ver_ind+m*n-1;
+	mesh->triangles[k][1] = ver_ind+m*n-m;
+	mesh->triangles[k][2] = ver_ind;
+	cout<<"chungo tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+	
+	mesh->triangles[k+1][0] = ver_ind+m*n-1;
+	mesh->triangles[k+1][1] = ver_ind;
+	mesh->triangles[k+1][2] = ver_ind+m-1;
+	cout<<"chungo tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+	
+	
+}
+
+void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs){
+	float alpha = 0.0f;
+	float alpha_delta = 2.0f*PI / revs;
+	for(int i=0; i<count_num; i++){
+		vertices[i][X] = countour[i][X];
+		vertices[i][Y] = countour[i][Y];
+		vertices[i][Z] = countour[i][Z];
+		cout<<"gen x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
+	}
+	int cont=count_num;
+	alpha+=alpha_delta;
+	for(int i=1; i<revs; i++){
+		for(int j=0; j<count_num; j++){
+			vertices[cont][X] = countour[j][X]*cos(alpha);
+			vertices[cont][Y] = countour[j][Y];
+			vertices[cont][Z] = countour[j][X]*sin(alpha);
+			cout<<"gen x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
+			cont++;
+		}
+		alpha+=alpha_delta;
+	}
+	for(int i=0; i<count_num*revs; i++){
+		cout<<"Vertice "<<i<<": x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

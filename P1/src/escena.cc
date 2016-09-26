@@ -17,6 +17,7 @@ void Escena::inicializar(int UI_window_width,int UI_window_height) {
 cout<<"VOY A CREAR UNA PIRAMIDE\n";
     tetra = new Pyramid();
     cube = new Prism();
+    torus = new Torus();
     object = tetra;
     mode = VERTICES;
     cout<<"HA IDO BIEN\n";
@@ -75,6 +76,7 @@ int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 		object = cube;
 		break;
 	case '3':
+		object = torus;
 		break;
 	case '4':
 		break;
