@@ -4,7 +4,7 @@ INC = include
 OBJ = obj
 BIN = bin
 
-PRAC = practica1
+PRAC = practica2
 
 CXX = g++
 CPPFLAGS = -Wall -g -I$(INC) -c
@@ -42,7 +42,7 @@ LDFLAGS= -lGLU -lGL -lglut
 default: $(BIN)/$(PRAC)
 
 # enlazado del binario final
-$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/tetrahedron.o $(OBJ)/cube.o $(OBJ)/model.o $(OBJ)/torus.o
+$(BIN)/$(PRAC): $(OBJ)/$(PRAC).o $(OBJ)/escena.o $(OBJ)/pyramid.o $(OBJ)/prism.o $(OBJ)/tetrahedron.o $(OBJ)/cube.o $(OBJ)/model.o $(OBJ)/torus.o $(OBJ)/ply_model.o $(OBJ)/file_ply_stl.o
 	$(CXX) $(CPPLFLAGS) $^ -o $(BIN)/$(PRAC) $(LDFLAGS)
 
 # compilación de los distintos módulos
@@ -65,6 +65,12 @@ $(OBJ)/prism.o: $(SRC)/prism.cc $(INC)/prism.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 $(OBJ)/cube.o: $(SRC)/cube.cc $(INC)/cube.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
+$(OBJ)/ply_model.o: $(SRC)/ply_model.cc $(INC)/ply_model.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
+$(OBJ)/file_ply_stl.o: $(SRC)/file_ply_stl.cc $(INC)/file_ply_stl.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 # compilación del primario $(PRAC) - MODIFICAR CONFORME SE AVANCE

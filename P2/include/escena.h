@@ -7,6 +7,7 @@
 //~ #include "prism.h"
 #include "cube.h"
 #include "torus.h"
+#include "ply_model.h"
 
 class Escena {
 private:
@@ -26,6 +27,7 @@ Tetrahedron *tetra;
 Cube *cube;
 Torus *torus;
 Model *object;
+PlyModel *ply_model;
 
 _render_mode mode;
 

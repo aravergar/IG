@@ -12,8 +12,11 @@
 #define _MODEL_H
 
 #include <cstdlib>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <iostream>
 #include <GL/gl.h>
-#include "vertex.h"
 #include "aux_definitions.h"
 
 using namespace std;
