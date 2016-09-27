@@ -46,7 +46,8 @@ Torus::Torus(float radius_may, float radius_min, uint div_ver_val, uint div_hor_
 	}
 	
 	// revolución del círculo
-	revolution(mesh->vertices, circle, div_ver, div_hor);
+	//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
+	revolution(mesh->vertices, circle, div_ver, div_hor, 0);
 	
 	// asignación de triángulos
 	make_triangles_hollow_body(div_ver, div_hor, 0, 0);

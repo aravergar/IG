@@ -20,6 +20,9 @@ cout<<"VOY A CREAR UNA PIRAMIDE\n";
     torus = new Torus();
     char* file_name = (char*)"beethoven.ply";
     ply_model = new PlyModel(file_name);
+    char* rev_file_name = (char*)"perfil.ply";
+    rev_model = new RevolutionModel(rev_file_name, 10, X);
+    
     object = tetra;
     mode = VERTICES;
     cout<<"HA IDO BIEN\n";
@@ -84,6 +87,10 @@ int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 		break;
 	case '5':
 		object = ply_model;
+		break;
+	case '6':
+		object = rev_model;
+		break;
 	}
 	if (toupper(Tecla1)=='Q') return 1;
 	else return 0;

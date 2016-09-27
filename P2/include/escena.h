@@ -8,6 +8,7 @@
 #include "cube.h"
 #include "torus.h"
 #include "ply_model.h"
+#include "revolution_model.h"
 
 class Escena {
 private:
@@ -26,8 +27,10 @@ Pyramid *pyramid;
 Tetrahedron *tetra;
 Cube *cube;
 Torus *torus;
-Model *object;
 PlyModel *ply_model;
+RevolutionModel *rev_model;
+
+Model *object;
 
 _render_mode mode;
 

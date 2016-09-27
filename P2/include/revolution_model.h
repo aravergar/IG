@@ -12,6 +12,7 @@
 #define _REVOLUTION_MODEL_H
 
 #include "model.h"
+#include "file_ply_stl.h"
 
 using namespace std;
 
@@ -22,12 +23,16 @@ using namespace std;
 // * countour (perfil) ó
 // * file (nombre del fichero PLY que contiene el perfil)
 
+enum Topology {HOLLOW, CONCAVE, CONVEX, CLOSED};
+
 class RevolutionModel: public Model{
 protected:
 	//~ void arrange(vector<float> ver, vector<int> tri);
+	int test_plane(Tuple3r *countour);
+	Topology test_topology(Tuple3r* countour, int num_ver, int plane, int axis, int *ind_axis);
 public:
-	RevolutionModel(Tuple3r *countour);
-	RevolutionModel(char *file);
+	RevolutionModel(Tuple3r *countour, int num_ver, int revolutions, int axis);
+	RevolutionModel(char *file, int revolutions, int axis);
 };
 
 #endif

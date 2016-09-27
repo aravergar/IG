@@ -265,16 +265,67 @@ void Model::make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind){
 	
 }
 
-void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs){
+//~ 0
+//~ 1 4 7
+//~ 2 5 8
+//~ 3 6 9
+//~ x
+
+//~ 0 1 4
+//~ 0 4 7
+//~ 0 7 1
+
+
+
+
+
+
+void Model::make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw){
+	int j = ver_ind;
+	int a, b;
+	if(ccw){	a=1; b=2;}
+	else{	a=2; b=1;}
+	for(int i=tri_ind; i<tri_ind+n-1; i++){
+		mesh->triangles[i][0] = center_ind;
+		mesh->triangles[i][a] = j;
+		mesh->triangles[i][b] = j+m;
+		j+=m;
+	}
+	mesh->triangles[tri_ind+n-1][0] = center_ind;
+	mesh->triangles[tri_ind+n-1][a] = j;
+	mesh->triangles[tri_ind+n-1][b] = ver_ind;
+	//~ if(ccw){
+		//~ for(int i=tri_ind; i<tri_ind+n-1; i++){
+			//~ triangles[i][0] = center_ind;
+			//~ triangles[i][1] = j;
+			//~ triangles[i][2] = j+m;
+			//~ j+=m;
+		//~ }
+		//~ triangles[tri_ind+n-1][0] = center_ind;
+		//~ triangles[tri_ind+n-1][1] = j;
+		//~ triangles[tri_ind+n-1][2] = ver_ind;
+	//~ }
+	//~ else{
+		//~ for(int i=tri_ind; i<tri_ind+n-1; i++){
+			//~ triangles[i][0] = center_ind;
+			//~ triangles[i][1] = j+m;
+			//~ triangles[i][2] = j;
+			//~ j+=m;
+		//~ }
+		
+	//~ }
+}
+
+void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init){
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / revs;
-	for(uint i=0; i<count_num; i++){
+	for(uint i=init; i<count_num; i++){
 		vertices[i][X] = countour[i][X];
 		vertices[i][Y] = countour[i][Y];
 		vertices[i][Z] = countour[i][Z];
 		cout<<"gen x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
 	}
-	int cont=count_num;
+	int cont=count_num+init;
 	alpha+=alpha_delta;
 	for(uint i=1; i<revs; i++){
 		for(uint j=0; j<count_num; j++){

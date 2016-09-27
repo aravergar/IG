@@ -35,12 +35,12 @@ void PlyModel::arrange(vector<float> ver, vector<int> tri){
 	mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 	mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 	
-	for(int i=0; i<mesh->num_ver; i++){
+	for(uint i=0; i<mesh->num_ver; i++){
 		mesh->vertices[i][X] = ver[i*3];
 		mesh->vertices[i][Y] = ver[i*3+1];
 		mesh->vertices[i][Z] = ver[i*3+2];
 	}
-	for(int i=0; i<mesh->num_tri; i++){
+	for(uint i=0; i<mesh->num_tri; i++){
 		mesh->triangles[i][0] = tri[i*3];
 		mesh->triangles[i][1] = tri[i*3+1];
 		mesh->triangles[i][2] = tri[i*3+2];
