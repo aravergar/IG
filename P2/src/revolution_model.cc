@@ -42,8 +42,11 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 	
 	switch(topol){
 		case HOLLOW:
+			cout<<"el objeto es HOLLOW"<<endl;
 			mesh->num_ver = num_ver*revolutions+2;
-			mesh->num_tri = 3*(num_ver)*revolutions;
+			mesh->num_tri = (num_ver-1)*revolutions*2+2*revolutions;
+			//~ mesh->num_tri = 3*(num_ver)*revolutions;
+			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			m = num_ver;
@@ -51,18 +54,21 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 			//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
 			break;
 		case CONCAVE:
+			cout<<"el objeto es CONCAVE"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
 			m = num_ver-1;
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CONVEX:
+			cout<<"el objeto es CONVEX"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
 			m = num_ver-1;
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CLOSED:
+			cout<<"el objeto es CLOSED"<<endl;
 			mesh->num_ver = (num_ver-2)*revolutions+2;
 			mesh->num_tri = 4*(num_ver-2)*revolutions;
 			m = num_ver-2;
@@ -70,6 +76,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 			break;
 	}
 	revolution(mesh->vertices, countour, num_ver, revolutions, 1);
+	
+	cout<<"el objeto tendrá "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	
 	/*
 	 * si HOLLOW o CONCAVE:
@@ -123,34 +131,46 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 			mesh->vertices[mesh->num_ver-1][Z] = 0;
 			switch(ind_axis){
 				case X:
-					mesh->vertices[mesh->num_ver-1][X] = countour[mesh->num_ver-1][X];
+					mesh->vertices[mesh->num_ver-1][X] = countour[num_ver-1][X];
 					break;
 				case Y:
-					mesh->vertices[mesh->num_ver-1][Y] = countour[mesh->num_ver-1][Y];
+					mesh->vertices[mesh->num_ver-1][Y] = countour[num_ver-1][Y];
 					break;
 				case Z:
-					mesh->vertices[mesh->num_ver-1][Z] = countour[mesh->num_ver-1][Z];
+					mesh->vertices[mesh->num_ver-1][Z] = countour[num_ver-1][Z];
 					break;
 			}
 			break;
 		case CONCAVE:
 		case CLOSED:
-			mesh->vertices[mesh->num_ver-1][X] = countour[mesh->num_ver-1][X];
-			mesh->vertices[mesh->num_ver-1][Y] = countour[mesh->num_ver-1][Y];
-			mesh->vertices[mesh->num_ver-1][Z] = countour[mesh->num_ver-1][Z];
+			mesh->vertices[mesh->num_ver-1][X] = countour[num_ver-1][X];
+			mesh->vertices[mesh->num_ver-1][Y] = countour[num_ver-1][Y];
+			mesh->vertices[mesh->num_ver-1][Z] = countour[num_ver-1][Z];
 			break;
 	}
+	
+	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+	
+	//~ cout<<"su vertice inicial es X="<<mesh->vertices[0][X]<<", Y="<<mesh->vertices[0][Y]<<", Z="<<mesh->vertices[0][Z]<<endl;
+	//~ cout<<"vertice antepenultimo numero "<<mesh->num_ver-3<<" es X="<<mesh->vertices[mesh->num_ver-3][X]<<", Y="<<mesh->vertices[mesh->num_ver-3][Y]<<", Z="<<mesh->vertices[mesh->num_ver-3][Z]<<endl;
+	//~ cout<<"vertice penultimo numero "<<mesh->num_ver-2<<" es X="<<mesh->vertices[mesh->num_ver-2][X]<<", Y="<<mesh->vertices[mesh->num_ver-2][Y]<<", Z="<<mesh->vertices[mesh->num_ver-2][Z]<<endl;
+	//~ cout<<"y su vertice final numero "<<mesh->num_ver-1<<" es X="<<mesh->vertices[mesh->num_ver-1][X]<<", Y="<<mesh->vertices[mesh->num_ver-1][Y]<<", Z="<<mesh->vertices[mesh->num_ver-1][Z]<<endl;
+	
 	// hay que rellenar los triangulos de la tapa superior...
 	// distinto para HOLLOW-CONCAVE que para CONVEX-CLOSED
 	make_triangles_fan(m, revolutions, 1, 0, 0, true);
-	
+	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...rellenar los triangulos de la malla...
 	//~ make_triangles_grid(int m, int n, int ver_ind, int tri_ind);
 	make_triangles_grid(m, revolutions, 1, revolutions-1);
-	
+	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...y por ultimo los de la tapa inferior
 	//~ make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw);
-	make_triangles_fan(m, revolutions, m*revolutions+1, mesh->num_tri-revolutions, mesh->num_ver-1, false);
+	make_triangles_fan(m, revolutions, m, mesh->num_tri-revolutions, mesh->num_ver-1, false);
+	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+	cout<<"DANGER INTERNO"<<endl;
+	this->test();
+	cout<<"DANGER INTERNO"<<endl;
 }
 
 RevolutionModel::RevolutionModel(char *file, int revolutions, int axis){
@@ -176,8 +196,13 @@ RevolutionModel::RevolutionModel(char *file, int revolutions, int axis){
 		vertices[i][Y] = ply_ver[i*3+1];
 		vertices[i][Z] = ply_ver[i*3+2];
 	}
-		
-	RevolutionModel(vertices, num_ver, revolutions, axis);
+	
+	RevolutionModel *another = new RevolutionModel(vertices, num_ver, revolutions, axis);
+	*this = *another;
+	//~ *this = new RevolutionModel(vertices, num_ver, revolutions, axis);
+	cout<<"DANGER"<<endl;
+	this->test();
+	cout<<"DANGER"<<endl;
 }
 
 int RevolutionModel::test_plane(Tuple3r *countour){

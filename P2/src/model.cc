@@ -23,6 +23,10 @@ Model::~Model(){
 	}
 }
 
+void Model::test(){
+	cout<<"tengo "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+}
+
 void Model::draw(_render_mode mode, Color3r color1,
 	Color3r color2, int width){
 	glEnable(GL_CULL_FACE);
@@ -145,7 +149,8 @@ Tuple3n* Model::alternate(bool alternate_A){
 void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
 	int k=tri_ind;
 	cout<<"m="<<m<<" n="<<n<<" ver_ind="<<ver_ind<<" tri_ind="<<tri_ind<<endl;
-	for(int i=ver_ind; i<m*n-1; i+=m){
+	for(int i=ver_ind; i<(m-1)*n; i+=m){
+		cout<<"tira del vertice numero "<<i<<endl;
 		for(int j=i; j<i+m-1; j++){
 			mesh->triangles[k][0] = j;
 			mesh->triangles[k][1] = j+1;
@@ -161,17 +166,19 @@ void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
 		}
 	}
 	int h=ver_ind;
-	for(int j=m*n-1; j<m*n+m-2; j++){
+	cout<<"FINAL ROUND"<<endl;
+	//~ for(int j=m*n-1; j<m*n+m-2; j++){
+	for(int j=(m-1)*n+m-1; j<(m-1)*n+2*(m-1); j++){
 		mesh->triangles[k][0] = j;
 		mesh->triangles[k][1] = j+1;
 		mesh->triangles[k][2] = h+1;
-		cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
+		cout<<"tri1 con j="<<j<<" y k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
 		
 		mesh->triangles[k+1][0] = j;
 		mesh->triangles[k+1][1] = h+1;
 		mesh->triangles[k+1][2] = h;
-		cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
-		
+		cout<<"tri2 con j="<<j<<" y k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
+		k+=2;
 		h+=2;
 	}
 }
@@ -281,6 +288,7 @@ void Model::make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind){
 
 
 void Model::make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw){
+	cout<<"fan para m="<<m<<", n="<<n<<", ver_ind="<<ver_ind<<", tri_ind="<<tri_ind<<", center_ind="<<center_ind<<" y ccw="<<ccw<<endl;
 	int j = ver_ind;
 	int a, b;
 	if(ccw){	a=1; b=2;}
@@ -289,11 +297,13 @@ void Model::make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int cente
 		mesh->triangles[i][0] = center_ind;
 		mesh->triangles[i][a] = j;
 		mesh->triangles[i][b] = j+m;
+		cout<<"insertando triangulo fan en i="<<i<<", con 0="<<center_ind<<", a="<<j<<" y b="<<j+m<<endl;
 		j+=m;
 	}
 	mesh->triangles[tri_ind+n-1][0] = center_ind;
 	mesh->triangles[tri_ind+n-1][a] = j;
 	mesh->triangles[tri_ind+n-1][b] = ver_ind;
+	cout<<"insertando triangulo FINAL en i="<<tri_ind+n-1<<", con 0="<<center_ind<<", a="<<j<<" y b="<<ver_ind<<endl;
 	//~ if(ccw){
 		//~ for(int i=tri_ind; i<tri_ind+n-1; i++){
 			//~ triangles[i][0] = center_ind;
@@ -319,11 +329,11 @@ void Model::make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int cente
 void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init){
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / revs;
-	for(uint i=init; i<count_num; i++){
-		vertices[i][X] = countour[i][X];
-		vertices[i][Y] = countour[i][Y];
-		vertices[i][Z] = countour[i][Z];
-		cout<<"gen x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
+	for(uint i=init; i<count_num+init; i++){
+		vertices[i][X] = countour[i-init][X];
+		vertices[i][Y] = countour[i-init][Y];
+		vertices[i][Z] = countour[i-init][Z];
+		cout<<"generar para i="<<i<<", x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
 	}
 	int cont=count_num+init;
 	alpha+=alpha_delta;
@@ -332,12 +342,12 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 			vertices[cont][X] = countour[j][X]*cos(alpha);
 			vertices[cont][Y] = countour[j][Y];
 			vertices[cont][Z] = countour[j][X]*sin(alpha);
-			cout<<"gen x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
+			cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
 			cont++;
 		}
 		alpha+=alpha_delta;
 	}
-	for(uint i=0; i<count_num*revs; i++){
+	for(uint i=init; i<count_num*revs+init; i++){
 		cout<<"Vertice "<<i<<": x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;
 	}
 }

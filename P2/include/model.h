@@ -33,6 +33,7 @@ public:
 	void make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw);
 	void make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind);
 	void revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init = 0);
+	void test();
 };
 
 #endif
