@@ -57,21 +57,21 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);	// comun a los 4
 			//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
 			break;
-		case CONCAVE:
+		case CONCAVE:	//TERMINAR
 			cout<<"el objeto es CONCAVE"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
 			m = num_ver-1;
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
-		case CONVEX:
+		case CONVEX:	//TERMINAR
 			cout<<"el objeto es CONVEX"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
 			m = num_ver-1;
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
-		case CLOSED:
+		case CLOSED:	//TERMINAR
 			cout<<"el objeto es CLOSED"<<endl;
 			mesh->num_ver = (num_ver-2)*revolutions+2;
 			mesh->num_tri = 4*(num_ver-2)*revolutions;
@@ -80,7 +80,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			break;
 	}
 	revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
-	
+	cout<<"el eje de giro es "<<axis<<" el eje independiente es "<<ind_axis<<" y el plano es "<<plane<<endl;
 	cout<<"el objeto tendrá "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	
 	/*
@@ -105,7 +105,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[0][X] = 0;
 			mesh->vertices[0][Y] = 0;
 			mesh->vertices[0][Z] = 0;
-			switch(ind_axis){
+			switch(axis){
 				case X:
 					mesh->vertices[0][X] = countour[0][X];
 					break;
@@ -133,7 +133,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[mesh->num_ver-1][X] = 0;	// esto si HOLLOW o CONVEX
 			mesh->vertices[mesh->num_ver-1][Y] = 0;
 			mesh->vertices[mesh->num_ver-1][Z] = 0;
-			switch(ind_axis){
+			switch(axis){
 				case X:
 					mesh->vertices[mesh->num_ver-1][X] = countour[num_ver-1][X];
 					break;
