@@ -338,15 +338,50 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 	}
 	int cont=count_num+init;
 	alpha+=alpha_delta;
-	for(uint i=1; i<revs; i++){
-		for(uint j=0; j<count_num; j++){
-			vertices[cont][X] = countour[j][X]*cos(alpha);
-			vertices[cont][Y] = countour[j][Y];
-			vertices[cont][Z] = countour[j][X]*sin(alpha);
-			cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
-			cont++;
+	cout<<"????"<<plane+axis<<endl;
+	int ind_plane = 3-(int)(plane+axis);
+	cout<<"plane="<<plane<<", axis="<<axis<<" e ind_plane="<<ind_plane<<endl;
+	// Introducir aquí variación de la generación dependiendo del eje sobre el que rotar
+	switch(axis){
+	case 0:
+		cout<<"generación por el eje "<<axis<<endl;
+		for(uint i=1; i<revs; i++){
+			for(uint j=0; j<count_num; j++){
+				vertices[cont][X] = countour[j][X]*cos(alpha);
+				vertices[cont][Y] = countour[j][Y];
+				vertices[cont][Z] = countour[j][X]*sin(alpha);
+				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
+				cont++;
+			}
+			alpha+=alpha_delta;
 		}
-		alpha+=alpha_delta;
+		break;
+	case 1:
+		cout<<"generación por el eje "<<axis<<endl;
+		for(uint i=1; i<revs; i++){
+			for(uint j=0; j<count_num; j++){
+				vertices[cont][X] = countour[j][ind_plane]*cos(alpha);
+				vertices[cont][Y] = countour[j][Y];
+				vertices[cont][Z] = countour[j][ind_plane]*sin(alpha);
+				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
+				cont++;
+			}
+			alpha+=alpha_delta;
+		}
+		break;
+	case 2:
+		cout<<"generación por el eje "<<axis<<endl;
+		for(uint i=1; i<revs; i++){
+			for(uint j=0; j<count_num; j++){
+				vertices[cont][X] = countour[j][X]*cos(alpha);
+				vertices[cont][Y] = countour[j][Y];
+				vertices[cont][Z] = countour[j][X]*sin(alpha);
+				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
+				cont++;
+			}
+			alpha+=alpha_delta;
+		}
+		break;
 	}
 	for(uint i=init; i<count_num*revs+init; i++){
 		cout<<"Vertice "<<i<<": x="<<vertices[i][X]<<", y="<<vertices[i][Y]<<", z="<<vertices[i][Z]<<endl;

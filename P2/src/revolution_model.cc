@@ -16,7 +16,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	// averiguar el plano en que se encuentra
 	int pre_plane = test_plane(countour);
 	int m;
-	cout<<"el plano es "<<plane<<endl;
+	cout<<"el preplano es "<<pre_plane<<" y el plano es "<<plane<<endl;
 	cout<<"el eje provisional es "<<axis<<endl;
 	// determinar el eje
 	if(pre_plane!=plane){
@@ -26,6 +26,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 		if(plane == Z)	axis = X;
 		else	axis++;
 	}
+	cout<<"el plano final es "<<plane<<endl;
 	cout<<"el eje final es "<<axis<<endl;
 	if(revolutions<3)	revolutions=3;
 	cout<<"el número de revoluciones es "<<revolutions<<endl;
@@ -78,7 +79,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 	}
-	revolution(mesh->vertices, countour, num_ver, revolutions, 1);
+	revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
 	
 	cout<<"el objeto tendrá "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	
