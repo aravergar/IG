@@ -162,7 +162,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...rellenar los triangulos de la malla...
 	//~ make_triangles_grid(int m, int n, int ver_ind, int tri_ind);
-	make_triangles_grid(m, revolutions, 1, revolutions-1);
+	make_triangles_grid(m, revolutions, 1, revolutions);
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...y por ultimo los de la tapa inferior
 	//~ make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw);
