@@ -28,12 +28,19 @@ enum Topology {HOLLOW, CONCAVE, CONVEX, CLOSED};
 class RevolutionModel: public Model{
 protected:
 	//~ void arrange(vector<float> ver, vector<int> tri);
+	int plane, axis, revolutions;
 	int test_plane(Tuple3r *countour);
 	void change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane);
 	Topology test_topology(Tuple3r* countour, int num_ver, int plane, int axis, int *ind_axis);
 public:
 	RevolutionModel(Tuple3r *countour, int num_ver, int plane, int revolutions, int axis);
 	RevolutionModel(char *file, int plane, int revolutions, int axis);
+	int getPlane();
+	//~ void setPlane(int plane);
+	int getAxis();
+	//~ void setAxis(int axis);
+	int getRevolutions();
+	//~ void setRevolutions();
 };
 
 #endif

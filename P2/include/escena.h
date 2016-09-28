@@ -29,6 +29,12 @@ Cube *cube;
 Torus *torus;
 PlyModel *ply_model;
 RevolutionModel *rev_model;
+int number_edges = 10;
+int plane = 2;
+int axis = 1;
+
+char* rev_file_name = (char*)"perfil.ply";
+char* file_name = (char*)"beethoven.ply";
 
 Model *object;
 

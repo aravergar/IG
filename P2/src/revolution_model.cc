@@ -31,6 +31,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	if(revolutions<3)	revolutions=3;
 	cout<<"el número de revoluciones es "<<revolutions<<endl;
 	
+	this->plane = plane;	this->axis = axis;	this->revolutions = revolutions;
+	
 	// inicializaciones
 	mesh = new Mesh();
 	
@@ -235,7 +237,23 @@ Topology RevolutionModel::test_topology(Tuple3r *countour, int num_ver, int plan
 	//~ Y	1	Z	2	X	0
 	//~ Z	2	X	0	Y	1
 	//~ Z	2	Y	1	X	0
+
+	//~ x*y+x+y	3-(x*y+x+y)
+	//~ 1		
+	//~ 2		
+	//~ 1		
+	//~ 5		
+	//~ 2		
+	//~ 5
 	
+	//~ x+y		ind_axis
+	//~ 1		2
+	//~ 2		1
+	//~ 1		2
+	//~ 3		0
+	//~ 2		1
+	//~ 3		0
+
 	//~ x*y+x+y	3-(x*y+x+y)
 	//~ 1		2
 	//~ 2		1
@@ -245,7 +263,8 @@ Topology RevolutionModel::test_topology(Tuple3r *countour, int num_ver, int plan
 	//~ 4		-1
 	
 	Topology topol;
-	*ind_axis = 3-(plane*axis + plane + axis);
+	cout<<"plane = "<<plane<<" y axis = "<<axis<<", por lo que plane*axis = "<<plane*axis<<", plane*axis+plane+axis = "<<plane*axis+plane+axis<<endl;
+	*ind_axis = 3-(plane + axis);
 	if(*ind_axis == -1)	*ind_axis = 0;
 	cout<<"eje independiente es "<<*ind_axis<<endl;
 	if(countour[0][*ind_axis] == 0){	// puede ser CONVEX o CLOSED
@@ -280,6 +299,12 @@ void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane
 		countour[i][plane] = val;
 	}
 }
+
+int RevolutionModel::getPlane(){	return plane;}
+
+int RevolutionModel::getAxis(){	return axis;}
+
+int RevolutionModel::getRevolutions(){	return revolutions;}
 
 //~ void PlyModel::arrange(vector<float> ver, vector<int> tri){
 	//~ mesh->num_ver = ver.size()/3;

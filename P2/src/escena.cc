@@ -2,6 +2,7 @@
 #include <iostream>
 #include <GL/gl.h>
     #include <GL/glut.h>
+#include <typeinfo>
 #include "escena.h"
 
 Escena::Escena(){
@@ -18,10 +19,10 @@ cout<<"VOY A CREAR UNA PIRAMIDE\n";
     tetra = new Tetrahedron(100);
     cube = new Cube(100);
     torus = new Torus();
-    char* file_name = (char*)"beethoven.ply";
+
     ply_model = new PlyModel(file_name);
-    char* rev_file_name = (char*)"perfil.ply";
-    rev_model = new RevolutionModel(rev_file_name, X, 10, Y);
+
+    rev_model = new RevolutionModel(rev_file_name, plane, number_edges, axis);
     cout<<"?"<<endl;
     rev_model->test();
     cout<<"?"<<endl;
@@ -75,7 +76,7 @@ void Escena::dibujar() {
 int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 
     std::cout << "Tecla "<< Tecla1<< std::endl;
-    switch(Tecla1){
+    switch(toupper(Tecla1)){
 	case '1':
 		object = tetra;
 		break;
@@ -95,6 +96,36 @@ int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 		object->test();
 		rev_model->test();
 		break;
+		
+	case 'A':
+		plane = 0;
+		break;
+	case 'S':
+		plane = 1;
+		break;
+	case 'D':
+		plane = 2;
+		break;
+	case 'Z':
+		axis = 0;
+		break;
+	case 'X':
+		axis = 1;
+		break;
+	case 'C':
+		axis = 2;
+		break;
+	case 'W':
+		number_edges++;
+		break;
+	case 'E':
+		if(number_edges>3)	number_edges--;
+		break;
+	}
+	if(plane!=rev_model->getPlane() || axis!=rev_model->getAxis() || number_edges!=rev_model->getRevolutions()){
+		//~ cout
+		delete(rev_model);
+		rev_model = new RevolutionModel(rev_file_name, plane, number_edges, axis);
 	}
 	if (toupper(Tecla1)=='Q') return 1;
 	else return 0;
