@@ -326,9 +326,10 @@ void Model::make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int cente
 	//~ }
 }
 
-void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init){
+void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init, int plane, int axis){
 	float alpha = 0.0f;
 	float alpha_delta = 2.0f*PI / revs;
+	
 	for(uint i=init; i<count_num+init; i++){
 		vertices[i][X] = countour[i-init][X];
 		vertices[i][Y] = countour[i-init][Y];

@@ -21,7 +21,7 @@ cout<<"VOY A CREAR UNA PIRAMIDE\n";
     char* file_name = (char*)"beethoven.ply";
     ply_model = new PlyModel(file_name);
     char* rev_file_name = (char*)"perfil.ply";
-    rev_model = new RevolutionModel(rev_file_name, 10, X);
+    rev_model = new RevolutionModel(rev_file_name, X, 10, Y);
     cout<<"?"<<endl;
     rev_model->test();
     cout<<"?"<<endl;

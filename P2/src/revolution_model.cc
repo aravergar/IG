@@ -12,13 +12,16 @@
 
 using namespace std;
 
-RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions, int axis){
+RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int revolutions, int axis){
 	// averiguar el plano en que se encuentra
-	int plane = test_plane(countour);
+	int pre_plane = test_plane(countour);
 	int m;
 	cout<<"el plano es "<<plane<<endl;
 	cout<<"el eje provisional es "<<axis<<endl;
 	// determinar el eje
+	if(pre_plane!=plane){
+		change_plane(countour, num_ver, pre_plane, plane);
+	}
 	if (plane == axis){
 		if(plane == Z)	axis = X;
 		else	axis++;
@@ -173,7 +176,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int revolutions
 	cout<<"DANGER INTERNO"<<endl;
 }
 
-RevolutionModel::RevolutionModel(char *file, int revolutions, int axis){
+RevolutionModel::RevolutionModel(char *file, int plane, int revolutions, int axis){
 	_file_ply ply_f;
 	
 	vector<float> ply_ver;
@@ -197,7 +200,9 @@ RevolutionModel::RevolutionModel(char *file, int revolutions, int axis){
 		vertices[i][Z] = ply_ver[i*3+2];
 	}
 	
-	RevolutionModel *another = new RevolutionModel(vertices, num_ver, revolutions, axis);
+	//~ int pre_plane = test_plane(vertices);
+	
+	RevolutionModel *another = new RevolutionModel(vertices, num_ver, plane, revolutions, axis);
 	*this = *another;
 	//~ *this = new RevolutionModel(vertices, num_ver, revolutions, axis);
 	cout<<"DANGER"<<endl;
@@ -251,6 +256,28 @@ Topology RevolutionModel::test_topology(Tuple3r *countour, int num_ver, int plan
 		else	topol = HOLLOW;
 	}
 	return topol;
+}
+
+
+//~ pre	pla	ind	+	3-(+)
+//~ 0	1	2	1		0
+//~ 1	0	2	1		0
+//~ 0	2	1	2		1
+//~ 2	0	1	2		1
+//~ 1	2	0	3		0
+//~ 2	1	0	3		0
+
+void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane){
+	//~ int ind_plane = 3-pre_plane+plane;
+	
+	//~ Tuple3r val;
+	//~ val[0] = 0.0f; val[1] = 0.0f; val[2] = 0.0f;
+	float val;
+	for(int i=0; i<num_ver; i++){
+		val = countour[i][pre_plane];
+		countour[i][pre_plane] = countour[i][plane];
+		countour[i][plane] = val;
+	}
 }
 
 //~ void PlyModel::arrange(vector<float> ver, vector<int> tri){
