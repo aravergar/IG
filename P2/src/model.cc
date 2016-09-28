@@ -179,7 +179,7 @@ void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
 		mesh->triangles[k+1][2] = h;
 		cout<<"tri2 con j="<<j<<" y k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
 		k+=2;
-		h+=2;
+		h++;
 	}
 }
 
