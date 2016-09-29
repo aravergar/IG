@@ -29,9 +29,9 @@ void Model::test(){
 
 void Model::draw(_render_mode mode, Color3r color1,
 	Color3r color2, int width){
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CCW);
+	//~ glEnable(GL_CULL_FACE);
+	//~ glCullFace(GL_FRONT);
+	//~ glFrontFace(GL_CCW);
 	glColor3f(color1[r], color1[g], color1[b]);
 	switch(mode){
 	case VERTICES:
@@ -194,13 +194,13 @@ void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind, bool ccw
 	//~ for(int j=m*n-1; j<m*n+m-2; j++){
 	//~ for(int j=(m-1)*n+m-1; j<(m-1)*n+2*(m-1); j++){
 	//~ for(int j=m*(n-2)+ver_ind; j<m*(n-1)+ver_ind; j++){
-	for(int j=m*(n-1)+ver_ind; j<m*n+ver_ind; j++){
-		mesh->triangles[k][0] = j;
-		mesh->triangles[k][a] = j+1;
+	for(int j=m*(n-1)+ver_ind-1; j<m*n+ver_ind-2; j++){
+		mesh->triangles[k][0] = j+1;
+		mesh->triangles[k][a] = j+2;
 		mesh->triangles[k][b] = h+1;
 		cout<<"tri1 con j="<<j<<" y k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
 		
-		mesh->triangles[k+1][0] = j;
+		mesh->triangles[k+1][0] = j+1;
 		mesh->triangles[k+1][a] = h+1;
 		mesh->triangles[k+1][b] = h;
 		cout<<"tri2 con j="<<j<<" y k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;

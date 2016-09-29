@@ -52,50 +52,53 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	switch(topol){
 		case HOLLOW:
 			cout<<"el objeto es HOLLOW"<<endl;
+			m = num_ver;
 			mesh->num_ver = num_ver*revolutions+2;
-			mesh->num_tri = (num_ver-1)*revolutions*2+2*revolutions;
+			mesh->num_tri = (m-1)*revolutions*2+2*revolutions;
 			//~ mesh->num_tri = 3*(num_ver)*revolutions;
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
-			m = num_ver;
+			
 			new_countour = countour;
 			cout<<new_countour<<" UUUUUUUUUUUUUU "<<countour<<endl;
-			revolution(mesh->vertices, new_countour, num_ver, revolutions, 1, plane, axis);
+			revolution(mesh->vertices, new_countour, m, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);	// comun a los 4
 			//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
 			break;
 		case CONCAVE:	//TERMINAR
 			cout<<"el objeto es CONCAVE"<<endl;
+			m = num_ver-1;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			//~ mesh->num_tri = 3*(num_ver-1)*revolutions;
-			mesh->num_tri = 2*(num_ver-1)*revolutions+2*revolutions;
+			mesh->num_tri = 2*(m-1)*revolutions+2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			
-			m = num_ver-1;
+			
 			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
 			for(int i=0; i<num_ver-1; i++){
 				new_countour[i][X] = countour[i][X];
 				new_countour[i][Y] = countour[i][Y];
 				new_countour[i][Z] = countour[i][Z];
 			}
-			revolution(mesh->vertices, new_countour, num_ver-1, revolutions, 1, plane, axis);
+			revolution(mesh->vertices, new_countour, m, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CONVEX:	//TERMINAR
 			cout<<"el objeto es CONVEX"<<endl;
+			m = num_ver-1;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			//~ mesh->num_tri = 3*(num_ver-1)*revolutions;
-			mesh->num_tri = 2*(num_ver-1)*revolutions+2*revolutions;
+			mesh->num_tri = 2*(m-1)*revolutions+2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			
-			m = num_ver-1;
+			
 			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
 			for(int i=0; i<num_ver-1; i++){
 				new_countour[i][X] = countour[i+1][X];
@@ -103,20 +106,21 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 				new_countour[i][Z] = countour[i+1][Z];
 			}
 			cout<<"con teoricamente "<<mesh->num_ver<<" vertices, voy a generar grid usando "<<num_ver-1<<" o "<<m<<" vertices"<<endl;
-			revolution(mesh->vertices, new_countour, num_ver-1, revolutions, 1, plane, axis);
+			revolution(mesh->vertices, new_countour, m, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CLOSED:	//TERMINAR
 			cout<<"el objeto es CLOSED"<<endl;
+			m = num_ver-2;
 			mesh->num_ver = (num_ver-2)*revolutions+2;
 			//~ mesh->num_tri = 4*(num_ver-2)*revolutions;
-			mesh->num_tri = 2*(num_ver-2)*revolutions + 2*revolutions;
+			mesh->num_tri = 2*(m-1)*revolutions + 2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			
-			m = num_ver-2;
+			
 			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
 			for(int i=0; i<num_ver-2; i++){
 				new_countour[i][X] = countour[i+1][X];
@@ -124,7 +128,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 				new_countour[i][Z] = countour[i+1][Z];
 			}
 			
-			revolution(mesh->vertices, new_countour, num_ver, revolutions, 1, plane, axis);
+			revolution(mesh->vertices, new_countour, m, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 	}
