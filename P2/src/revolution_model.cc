@@ -48,7 +48,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	
 	int ind_axis;
 	Topology topol = test_topology(countour, num_ver, plane, axis, &ind_axis);
-	
+	Tuple3r *new_countour;
 	switch(topol){
 		case HOLLOW:
 			cout<<"el objeto es HOLLOW"<<endl;
@@ -59,6 +59,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			m = num_ver;
+			new_countour = countour;
+			revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);	// comun a los 4
 			//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
 			break;
@@ -66,25 +68,63 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			cout<<"el objeto es CONCAVE"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
+			
+			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
+			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
+			
 			m = num_ver-1;
+			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
+			for(int i=0; i<num_ver-1; i++){
+				new_countour[i][X] = countour[i][X];
+				new_countour[i][Y] = countour[i][Y];
+				new_countour[i][Z] = countour[i][Z];
+			}
+			revolution(mesh->vertices, new_countour, num_ver-1, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CONVEX:	//TERMINAR
 			cout<<"el objeto es CONVEX"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
 			mesh->num_tri = 3*(num_ver-1)*revolutions;
+			
+			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
+			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
+			
 			m = num_ver-1;
+			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
+			for(int i=0; i<num_ver-1; i++){
+				new_countour[i][X] = countour[i+1][X];
+				new_countour[i][Y] = countour[i+1][Y];
+				new_countour[i][Z] = countour[i+1][Z];
+			}
+			revolution(mesh->vertices, new_countour, num_ver-1, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CLOSED:	//TERMINAR
 			cout<<"el objeto es CLOSED"<<endl;
 			mesh->num_ver = (num_ver-2)*revolutions+2;
 			mesh->num_tri = 4*(num_ver-2)*revolutions;
+			
+			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
+			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
+			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
+			
 			m = num_ver-2;
+			new_countour = (Tuple3r*) malloc((num_ver-1)*sizeof(Tuple3r));
+			for(int i=0; i<num_ver-2; i++){
+				new_countour[i][X] = countour[i+1][X];
+				new_countour[i][Y] = countour[i+1][Y];
+				new_countour[i][Z] = countour[i+1][Z];
+			}
+			
+			revolution(mesh->vertices, new_countour, num_ver, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 	}
-	revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
+	free(countour);
+	//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
 	cout<<"el eje de giro es "<<axis<<" el eje independiente es "<<ind_axis<<" y el plano es "<<plane<<endl;
 	cout<<"el objeto tendrá "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	
@@ -112,21 +152,21 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[0][Z] = 0;
 			switch(axis){
 				case X:
-					mesh->vertices[0][X] = countour[0][X];
+					mesh->vertices[0][X] = new_countour[0][X];
 					break;
 				case Y:
-					mesh->vertices[0][Y] = countour[0][Y];
+					mesh->vertices[0][Y] = new_countour[0][Y];
 					break;
 				case Z:
-					mesh->vertices[0][Z] = countour[0][Z];
+					mesh->vertices[0][Z] = new_countour[0][Z];
 					break;
 			}
 			break;
 		case CONVEX:
 		case CLOSED:
-			mesh->vertices[0][X] = countour[0][X];
-			mesh->vertices[0][Y] = countour[0][Y];
-			mesh->vertices[0][Z] = countour[0][Z];
+			mesh->vertices[0][X] = new_countour[0][X];
+			mesh->vertices[0][Y] = new_countour[0][Y];
+			mesh->vertices[0][Z] = new_countour[0][Z];
 			break;
 	}
 	
@@ -140,21 +180,21 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[mesh->num_ver-1][Z] = 0;
 			switch(axis){
 				case X:
-					mesh->vertices[mesh->num_ver-1][X] = countour[num_ver-1][X];
+					mesh->vertices[mesh->num_ver-1][X] = new_countour[num_ver-1][X];
 					break;
 				case Y:
-					mesh->vertices[mesh->num_ver-1][Y] = countour[num_ver-1][Y];
+					mesh->vertices[mesh->num_ver-1][Y] = new_countour[num_ver-1][Y];
 					break;
 				case Z:
-					mesh->vertices[mesh->num_ver-1][Z] = countour[num_ver-1][Z];
+					mesh->vertices[mesh->num_ver-1][Z] = new_countour[num_ver-1][Z];
 					break;
 			}
 			break;
 		case CONCAVE:
 		case CLOSED:
-			mesh->vertices[mesh->num_ver-1][X] = countour[num_ver-1][X];
-			mesh->vertices[mesh->num_ver-1][Y] = countour[num_ver-1][Y];
-			mesh->vertices[mesh->num_ver-1][Z] = countour[num_ver-1][Z];
+			mesh->vertices[mesh->num_ver-1][X] = new_countour[num_ver-1][X];
+			mesh->vertices[mesh->num_ver-1][Y] = new_countour[num_ver-1][Y];
+			mesh->vertices[mesh->num_ver-1][Z] = new_countour[num_ver-1][Z];
 			break;
 	}
 	
@@ -165,17 +205,31 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	//~ cout<<"vertice penultimo numero "<<mesh->num_ver-2<<" es X="<<mesh->vertices[mesh->num_ver-2][X]<<", Y="<<mesh->vertices[mesh->num_ver-2][Y]<<", Z="<<mesh->vertices[mesh->num_ver-2][Z]<<endl;
 	//~ cout<<"y su vertice final numero "<<mesh->num_ver-1<<" es X="<<mesh->vertices[mesh->num_ver-1][X]<<", Y="<<mesh->vertices[mesh->num_ver-1][Y]<<", Z="<<mesh->vertices[mesh->num_ver-1][Z]<<endl;
 	
+	bool ccw = true;
+	
+	//~ plane	axis	ccw
+	//~ 0		1		true
+	//~ 0		2		false
+	//~ 1		0		true
+	//~ 1		2		false
+	//~ 2		0		true
+	//~ 2		1		true
+					
+					
+					
+					
+	
 	// hay que rellenar los triangulos de la tapa superior...
 	// distinto para HOLLOW-CONCAVE que para CONVEX-CLOSED
-	make_triangles_fan(m, revolutions, 1, 0, 0, true);
+	make_triangles_fan(m, revolutions, 1, 0, 0, ccw);
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...rellenar los triangulos de la malla...
 	//~ make_triangles_grid(int m, int n, int ver_ind, int tri_ind);
-	make_triangles_grid(m, revolutions, 1, revolutions);
+	make_triangles_grid(m, revolutions, 1, revolutions, ccw);
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	// ...y por ultimo los de la tapa inferior
 	//~ make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw);
-	make_triangles_fan(m, revolutions, m, mesh->num_tri-revolutions, mesh->num_ver-1, false);
+	make_triangles_fan(m, revolutions, m, mesh->num_tri-revolutions, mesh->num_ver-1, !ccw);
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 	cout<<"DANGER INTERNO"<<endl;
 	this->test();
@@ -315,7 +369,7 @@ void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane
 	
 	int ind_axis = 3-(plane+axis);
 	cout<<"pre_plane="<<pre_plane<<" plane = "<<plane<<", axis="<<axis<<", ind_axis="<<ind_axis<<endl;
-	float val;
+	//~ float val;
 	for(int i=0; i<num_ver; i++){
 		cout<<"el vertice era x="<<countour[i][X]<<", y="<<countour[i][Y]<<", z="<<countour[i][Z]<<endl;
 		//~ val = countour[i][ind_axis];

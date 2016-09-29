@@ -6,7 +6,7 @@ BIN = bin
 
 PRAC = practica2
 
-CXX = g++
+CXX = g++ -std=c++11
 CPPFLAGS = -Wall -g -I$(INC) -c
 CPPLFLAGS = -Wall -g
 

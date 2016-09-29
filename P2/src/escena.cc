@@ -124,8 +124,25 @@ int Escena::teclaPulsada(unsigned char Tecla1,int x,int y) {
 	}
 	if(plane!=rev_model->getPlane() || axis!=rev_model->getAxis() || number_edges!=rev_model->getRevolutions()){
 		//~ cout
+		//~ delete(rev_model);
+		
+		//~ cout<<"voy bien 1"<<endl;
+		//~ RevolutionModel *another = new RevolutionModel(rev_file_name, plane, number_edges, axis);
+		//~ cout<<"voy bien 2"<<endl;
+		//~ RevolutionModel *one = rev_model;
+		//~ cout<<"voy bien 3"<<endl;
+		//~ rev_model = another;
+		//~ cout<<"voy bien 4"<<endl;
+		//~ one->~Model();
+		//~ cout<<"voy bien 5"<<endl;
+		//~ rev_model->test();
+		//~ rev_model->~RevolutionModel();
+		//~ rev_model = new RevolutionModel(rev_file_name, plane, number_edges, axis);
+		
 		delete(rev_model);
+		//~ rev_model->~Model();
 		rev_model = new RevolutionModel(rev_file_name, plane, number_edges, axis);
+		
 	}
 	if (toupper(Tecla1)=='Q') return 1;
 	else return 0;

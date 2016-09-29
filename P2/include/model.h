@@ -29,7 +29,7 @@ public:
 	~Model();
 	virtual void draw(_render_mode mode, Color3r color1,
 		Color3r color2 = NULL, int width = 0);
-	void make_triangles_grid(int m, int n, int ver_ind, int tri_ind);
+	void make_triangles_grid(int m, int n, int ver_ind, int tri_ind, bool ccw=true);
 	void make_triangles_fan(int m, int n, int ver_ind, int tri_ind, int center_ind, bool ccw);
 	void make_triangles_hollow_body(int m, int n, int ver_ind, int tri_ind);
 	void revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init = 0, int plane = 0, int axis = 0);

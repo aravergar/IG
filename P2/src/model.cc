@@ -146,20 +146,23 @@ Tuple3n* Model::alternate(bool alternate_A){
 	//~ y, inicio de triangulos
 
 
-void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
+void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind, bool ccw){
 	int k=tri_ind;
+	int a, b;
 	cout<<"m="<<m<<" n="<<n<<" ver_ind="<<ver_ind<<" tri_ind="<<tri_ind<<endl;
-	for(int i=ver_ind; i<(m-1)*n; i+=m){
+	if(ccw){	a=1; b=2;}
+	else{	a=2; b=1;}
+	for(int i=ver_ind; i<m*(n-1)+ver_ind; i+=m){	// CORREGIDO de i<(m-1)*n a i<m*(n-1)
 		cout<<"tira del vertice numero "<<i<<endl;
 		for(int j=i; j<i+m-1; j++){
 			mesh->triangles[k][0] = j;
-			mesh->triangles[k][1] = j+1;
-			mesh->triangles[k][2] = j+m+1;
+			mesh->triangles[k][a] = j+1;
+			mesh->triangles[k][b] = j+m+1;
 			cout<<"tri1 con k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
 			
 			mesh->triangles[k+1][0] = j;
-			mesh->triangles[k+1][1] = j+m+1;
-			mesh->triangles[k+1][2] = j+m;
+			mesh->triangles[k+1][a] = j+m+1;
+			mesh->triangles[k+1][b] = j+m;
 			cout<<"tri2 con k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
 						
 			k+=2;
@@ -167,16 +170,38 @@ void Model::make_triangles_grid(int m, int n, int ver_ind, int tri_ind){
 	}
 	int h=ver_ind;
 	cout<<"FINAL ROUND"<<endl;
+	
+	//~ m=4
+	//~ n=6
+	//~ ver_ind = 1
+	//~ 1	5	9	13	17	21
+	//~ 2	6	10	14	18	22
+	//~ 3	7	11	15	19	23
+	//~ 4	8	12	16	20	24
+	
+	//~ 0	4	8	12	16	20
+	//~ 1	5	9	13	17	21
+	//~ 2	6	10	14	18	22
+	//~ 3	7	11	15	19	23
+	
+	//~ ver_ind	ver_ind+m	m*(n-2)+ver_ind	m*(n-1)+ver_ind
+	//~ v+1
+	//~ v+2
+	
+	
+	
 	//~ for(int j=m*n-1; j<m*n+m-2; j++){
-	for(int j=(m-1)*n+m-1; j<(m-1)*n+2*(m-1); j++){
+	//~ for(int j=(m-1)*n+m-1; j<(m-1)*n+2*(m-1); j++){
+	//~ for(int j=m*(n-2)+ver_ind; j<m*(n-1)+ver_ind; j++){
+	for(int j=m*(n-1)+ver_ind; j<m*n+ver_ind; j++){
 		mesh->triangles[k][0] = j;
-		mesh->triangles[k][1] = j+1;
-		mesh->triangles[k][2] = h+1;
+		mesh->triangles[k][a] = j+1;
+		mesh->triangles[k][b] = h+1;
 		cout<<"tri1 con j="<<j<<" y k="<<k<<" 0="<<mesh->triangles[k][0]<<" 1="<<mesh->triangles[k][1]<<" 2="<<mesh->triangles[k][2]<<endl;
 		
 		mesh->triangles[k+1][0] = j;
-		mesh->triangles[k+1][1] = h+1;
-		mesh->triangles[k+1][2] = h;
+		mesh->triangles[k+1][a] = h+1;
+		mesh->triangles[k+1][b] = h;
 		cout<<"tri2 con j="<<j<<" y k="<<k+1<<" 0="<<mesh->triangles[k+1][0]<<" 1="<<mesh->triangles[k+1][1]<<" 2="<<mesh->triangles[k+1][2]<<endl;
 		k+=2;
 		h++;
@@ -338,7 +363,7 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 	}
 	int cont=count_num+init;
 	alpha+=alpha_delta;
-	cout<<"????"<<plane+axis<<endl;
+	//~ cout<<"????"<<plane+axis<<endl;
 	int ind_plane = 3-(int)(plane+axis);
 	cout<<"plane="<<plane<<", axis="<<axis<<" e ind_plane="<<ind_plane<<endl;
 	// Introducir aquí variación de la generación dependiendo del eje sobre el que rotar
