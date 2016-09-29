@@ -60,7 +60,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->triangles = (Tuple3n*) malloc((mesh->num_tri)*sizeof(Tuple3n));
 			m = num_ver;
 			new_countour = countour;
-			revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
+			cout<<new_countour<<" UUUUUUUUUUUUUU "<<countour<<endl;
+			revolution(mesh->vertices, new_countour, num_ver, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);	// comun a los 4
 			//~ revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uint revs, uint init)
 			break;
@@ -123,7 +124,17 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 	}
-	free(countour);
+	cout<<"punto generador 0: plane="<<countour[0][plane]<<", axis="<<countour[0][axis]<<", ind="<<countour[0][3-(plane+axis)]<<endl;
+	cout<<"punto generador 0: plane="<<new_countour[0][plane]<<", axis="<<new_countour[0][axis]<<", ind="<<new_countour[0][3-(plane+axis)]<<endl;
+	if(countour!=new_countour){
+		cout<<"puntero distinto"<<endl;
+		free(countour);
+	}
+	else{
+		countour=NULL;
+		cout<<"puntero igual"<<endl;
+	}
+	cout<<"punto generador 0: plane="<<new_countour[0][plane]<<", axis="<<new_countour[0][axis]<<", ind="<<new_countour[0][3-(plane+axis)]<<endl;
 	//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1, plane, axis);
 	cout<<"el eje de giro es "<<axis<<" el eje independiente es "<<ind_axis<<" y el plano es "<<plane<<endl;
 	cout<<"el objeto tendrá "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
@@ -144,23 +155,27 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	 * z = countour[height]
 	*/
 	
+	cout<<"plane="<<plane<<", axis="<<axis<<", ind="<<3-(plane+axis)<<endl;
+	cout<<"punto 0: plane="<<new_countour[0][plane]<<", axis="<<new_countour[0][axis]<<", ind="<<new_countour[0][3-(plane+axis)]<<endl;
+	cout<<"punto 1: plane="<<new_countour[1][plane]<<", axis="<<new_countour[1][axis]<<", ind="<<new_countour[1][3-(plane+axis)]<<endl;
 	switch(topol){
 		case HOLLOW:
 		case CONCAVE:
-			mesh->vertices[0][X] = 0;
-			mesh->vertices[0][Y] = 0;
-			mesh->vertices[0][Z] = 0;
-			switch(axis){
-				case X:
-					mesh->vertices[0][X] = new_countour[0][X];
-					break;
-				case Y:
-					mesh->vertices[0][Y] = new_countour[0][Y];
-					break;
-				case Z:
-					mesh->vertices[0][Z] = new_countour[0][Z];
-					break;
-			}
+			//~ mesh->vertices[0][3-plane+axis] = 0;
+			mesh->vertices[0][3-(plane+axis)] = 0.0f;
+			mesh->vertices[0][plane] = 0.0f;
+			mesh->vertices[0][axis] = new_countour[0][axis];
+			//~ switch(axis){
+				//~ case X:
+					//~ mesh->vertices[0][X] = new_countour[0][X];
+					//~ break;
+				//~ case Y:
+					//~ mesh->vertices[0][Y] = new_countour[0][Y];
+					//~ break;
+				//~ case Z:
+					//~ mesh->vertices[0][Z] = new_countour[0][Z];
+					//~ break;
+			//~ }
 			break;
 		case CONVEX:
 		case CLOSED:
@@ -170,25 +185,51 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			break;
 	}
 	
+	//~ switch(topol){
+		//~ case HOLLOW:
+		//~ case CONCAVE:
+			//~ mesh->vertices[0][X] = 0;
+			//~ mesh->vertices[0][Y] = 0;
+			//~ mesh->vertices[0][Z] = 0;
+			//~ switch(axis){
+				//~ case X:
+					//~ mesh->vertices[0][X] = new_countour[0][X];
+					//~ break;
+				//~ case Y:
+					//~ mesh->vertices[0][Y] = new_countour[0][Y];
+					//~ break;
+				//~ case Z:
+					//~ mesh->vertices[0][Z] = new_countour[0][Z];
+					//~ break;
+			//~ }
+			//~ break;
+		//~ case CONVEX:
+		//~ case CLOSED:
+			//~ mesh->vertices[0][X] = new_countour[0][X];
+			//~ mesh->vertices[0][Y] = new_countour[0][Y];
+			//~ mesh->vertices[0][Z] = new_countour[0][Z];
+			//~ break;
+	//~ }
+	
 	//~ mesh->vertices[mesh->num_ver-1][X] = countour[0][X];
 	//~ mesh->vertices[mesh->num_ver-1][X] = 0;
 	switch(topol){
 		case HOLLOW:
 		case CONVEX:
-			mesh->vertices[mesh->num_ver-1][X] = 0;	// esto si HOLLOW o CONVEX
-			mesh->vertices[mesh->num_ver-1][Y] = 0;
-			mesh->vertices[mesh->num_ver-1][Z] = 0;
-			switch(axis){
-				case X:
-					mesh->vertices[mesh->num_ver-1][X] = new_countour[num_ver-1][X];
-					break;
-				case Y:
-					mesh->vertices[mesh->num_ver-1][Y] = new_countour[num_ver-1][Y];
-					break;
-				case Z:
-					mesh->vertices[mesh->num_ver-1][Z] = new_countour[num_ver-1][Z];
-					break;
-			}
+			mesh->vertices[mesh->num_ver-1][axis] = new_countour[num_ver-1][axis];	// esto si HOLLOW o CONVEX
+			mesh->vertices[mesh->num_ver-1][plane] = 0;
+			mesh->vertices[mesh->num_ver-1][3-(axis+plane)] = 0;
+			//~ switch(axis){
+				//~ case X:
+					//~ mesh->vertices[mesh->num_ver-1][X] = new_countour[num_ver-1][X];
+					//~ break;
+				//~ case Y:
+					//~ mesh->vertices[mesh->num_ver-1][Y] = new_countour[num_ver-1][Y];
+					//~ break;
+				//~ case Z:
+					//~ mesh->vertices[mesh->num_ver-1][Z] = new_countour[num_ver-1][Z];
+					//~ break;
+			//~ }
 			break;
 		case CONCAVE:
 		case CLOSED:
