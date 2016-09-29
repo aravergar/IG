@@ -33,7 +33,7 @@ int number_edges = 10;
 int plane = 2;
 int axis = 1;
 
-char* rev_file_name = (char*)"copa.ply";
+char* rev_file_name = (char*)"universe.ply";
 char* file_name = (char*)"beethoven.ply";
 
 Model *object;
