@@ -68,7 +68,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 		case CONCAVE:	//TERMINAR
 			cout<<"el objeto es CONCAVE"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
-			mesh->num_tri = 3*(num_ver-1)*revolutions;
+			//~ mesh->num_tri = 3*(num_ver-1)*revolutions;
+			mesh->num_tri = 2*(num_ver-1)*revolutions+2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
@@ -87,7 +88,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 		case CONVEX:	//TERMINAR
 			cout<<"el objeto es CONVEX"<<endl;
 			mesh->num_ver = (num_ver-1)*revolutions+2;
-			mesh->num_tri = 3*(num_ver-1)*revolutions;
+			//~ mesh->num_tri = 3*(num_ver-1)*revolutions;
+			mesh->num_tri = 2*(num_ver-1)*revolutions+2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
@@ -100,13 +102,15 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 				new_countour[i][Y] = countour[i+1][Y];
 				new_countour[i][Z] = countour[i+1][Z];
 			}
+			cout<<"con teoricamente "<<mesh->num_ver<<" vertices, voy a generar grid usando "<<num_ver-1<<" o "<<m<<" vertices"<<endl;
 			revolution(mesh->vertices, new_countour, num_ver-1, revolutions, 1, plane, axis);
 			//~ revolution(mesh->vertices, countour, num_ver, revolutions, 1);
 			break;
 		case CLOSED:	//TERMINAR
 			cout<<"el objeto es CLOSED"<<endl;
 			mesh->num_ver = (num_ver-2)*revolutions+2;
-			mesh->num_tri = 4*(num_ver-2)*revolutions;
+			//~ mesh->num_tri = 4*(num_ver-2)*revolutions;
+			mesh->num_tri = 2*(num_ver-2)*revolutions + 2*revolutions;
 			
 			cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
 			mesh->vertices = (Tuple3r*) malloc((mesh->num_ver)*sizeof(Tuple3r));
@@ -158,6 +162,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	cout<<"plane="<<plane<<", axis="<<axis<<", ind="<<3-(plane+axis)<<endl;
 	cout<<"punto 0: plane="<<new_countour[0][plane]<<", axis="<<new_countour[0][axis]<<", ind="<<new_countour[0][3-(plane+axis)]<<endl;
 	cout<<"punto 1: plane="<<new_countour[1][plane]<<", axis="<<new_countour[1][axis]<<", ind="<<new_countour[1][3-(plane+axis)]<<endl;
+	//~ cout<<"punto "<<num_ver-1<<": plane="<<new_countour[num_ver-1][plane]<<", axis="<<new_countour[num_ver-1][axis]<<", ind="<<new_countour[num_ver-1][3-(plane+axis)]<<endl;
 	switch(topol){
 		case HOLLOW:
 		case CONCAVE:
@@ -216,7 +221,14 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	switch(topol){
 		case HOLLOW:
 		case CONVEX:
-			mesh->vertices[mesh->num_ver-1][axis] = new_countour[num_ver-1][axis];	// esto si HOLLOW o CONVEX
+			cout<<"asignando ultimo vertice (numero "<<mesh->num_ver-1<<")"<<endl;
+			cout<<"axis="<<new_countour[num_ver-1][axis]<<", plane=0, ind=0"<<endl;
+			cout<<".................. O asignando ultimo vertice (numero "<<mesh->num_ver-2<<")"<<endl;
+			cout<<"axis="<<new_countour[num_ver-2][axis]<<", plane=0, ind=0"<<endl;
+			if(topol==HOLLOW)
+				mesh->vertices[mesh->num_ver-1][axis] = new_countour[num_ver-1][axis];	// esto si HOLLOW o CONVEX
+			else
+				mesh->vertices[mesh->num_ver-1][axis] = new_countour[num_ver-2][axis];	// esto si HOLLOW o CONVEX
 			mesh->vertices[mesh->num_ver-1][plane] = 0;
 			mesh->vertices[mesh->num_ver-1][3-(axis+plane)] = 0;
 			//~ switch(axis){
@@ -233,9 +245,13 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			break;
 		case CONCAVE:
 		case CLOSED:
-			mesh->vertices[mesh->num_ver-1][X] = new_countour[num_ver-1][X];
-			mesh->vertices[mesh->num_ver-1][Y] = new_countour[num_ver-1][Y];
-			mesh->vertices[mesh->num_ver-1][Z] = new_countour[num_ver-1][Z];
+			cout<<"asignando ultimo vertice (numero "<<mesh->num_ver-1<<")"<<endl;
+			cout<<"axis="<<new_countour[num_ver-1][axis]<<", plane="<<new_countour[num_ver-1][plane]<<", ind="<<new_countour[num_ver-1][3-(plane+axis)]<<endl;
+			//~ cout<<".................. O asignando ultimo vertice (numero "<<mesh->num_ver-2<<")"<<endl;
+			//~ cout<<"axis="<<new_countour[num_ver-2][axis]<<", plane=0, ind=0"<<endl;
+			mesh->vertices[mesh->num_ver-1][X] = new_countour[m-1][X];
+			mesh->vertices[mesh->num_ver-1][Y] = new_countour[m-1][Y];
+			mesh->vertices[mesh->num_ver-1][Z] = new_countour[m-1][Z];
 			break;
 	}
 	
@@ -361,16 +377,19 @@ Topology RevolutionModel::test_topology(Tuple3r *countour, int num_ver, int plan
 	//~ 4		-1
 	
 	Topology topol;
-	cout<<"plane = "<<plane<<" y axis = "<<axis<<", por lo que plane*axis = "<<plane*axis<<", plane*axis+plane+axis = "<<plane*axis+plane+axis<<endl;
+	cout<<"VOY A ANALIZAR TOPOLOGIA:"<<endl;
+	cout<<"plane = "<<plane<<" y axis = "<<axis<<", ind="<<3-(plane+axis)<<endl;
 	*ind_axis = 3-(plane + axis);
-	if(*ind_axis == -1)	*ind_axis = 0;
+	//~ if(*ind_axis == -1)	*ind_axis = 0;
 	cout<<"eje independiente es "<<*ind_axis<<endl;
+	cout<<"ANALIZO en primer lugar vertice 0: ind="<<countour[0][*ind_axis]<<", plane="<<countour[0][plane]<<", axis="<<countour[0][axis]<<endl;
+	cout<<".....y también vértice "<<num_ver-1<<": ind="<<countour[num_ver-1][*ind_axis]<<", plane="<<countour[num_ver-1][plane]<<", axis="<<countour[num_ver-1][axis]<<endl;
 	if(countour[0][*ind_axis] == 0){	// puede ser CONVEX o CLOSED
 		if(countour[num_ver-1][*ind_axis] == 0)	topol = CLOSED;
 		else	topol = CONVEX;
 	}
 	else{	// puede ser CONCAVE o HOLLOW
-		if(countour[num_ver-1][*ind_axis] == 0)	topol = CONVEX;
+		if(countour[num_ver-1][*ind_axis] == 0)	topol = CONCAVE;
 		else	topol = HOLLOW;
 	}
 	return topol;

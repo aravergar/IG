@@ -87,6 +87,7 @@ Tuple3n* Model::alternate(bool alternate_A){
 	else
 		i=1;
 	for( ; i<mesh->num_tri; i+=2){
+		cout<<"alternando para i="<<i<<" con cont="<<cont<<endl;
 		alt[cont][0] = mesh->triangles[i][0];
 		alt[cont][1] = mesh->triangles[i][1];
 		alt[cont][2] = mesh->triangles[i][2];
