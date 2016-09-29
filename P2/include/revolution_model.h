@@ -30,7 +30,7 @@ protected:
 	//~ void arrange(vector<float> ver, vector<int> tri);
 	int plane, axis, revolutions;
 	int test_plane(Tuple3r *countour);
-	void change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane);
+	void change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane, int axis);
 	Topology test_topology(Tuple3r* countour, int num_ver, int plane, int axis, int *ind_axis);
 public:
 	RevolutionModel(Tuple3r *countour, int num_ver, int plane, int revolutions, int axis);

@@ -19,13 +19,16 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	cout<<"el preplano es "<<pre_plane<<" y el plano es "<<plane<<endl;
 	cout<<"el eje provisional es "<<axis<<endl;
 	// determinar el eje
-	if(pre_plane!=plane){
-		change_plane(countour, num_ver, pre_plane, plane);
-	}
+	
 	if (plane == axis){
 		if(plane == Z)	axis = X;
 		else	axis++;
 	}
+	
+	if(pre_plane!=plane){
+		change_plane(countour, num_ver, pre_plane, plane, axis);
+	}
+	
 	cout<<"el plano final es "<<plane<<endl;
 	cout<<"el eje final es "<<axis<<endl;
 	if(revolutions<3)	revolutions=3;
@@ -287,17 +290,47 @@ Topology RevolutionModel::test_topology(Tuple3r *countour, int num_ver, int plan
 //~ 1	2	0	3		0
 //~ 2	1	0	3		0
 
-void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane){
+void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane, int plane, int axis){
 	//~ int ind_plane = 3-pre_plane+plane;
 	
 	//~ Tuple3r val;
 	//~ val[0] = 0.0f; val[1] = 0.0f; val[2] = 0.0f;
+	cout<<"CAMBIAR DE PLANO "<<pre_plane<<" A PLANO "<<plane<<" CON EJE DE ROTACIÓN "<<axis<<endl;
+	
+	//~ plano Z
+	//~ eje Y
+	//~ x1 y1 z1
+	//~ x2 y2 z2
+	//~ x3 y3 z3
+	//~ x1 y1 0
+	//~ x2 y2 0
+	//~ x3 y3 0
+	
+	
+	//~ plano Y
+	//~ eje X
+	//~ ? 0 ?
+	//~ ? 0 ?
+	//~ ? 0 ?
+	
+	int ind_axis = 3-(plane+axis);
+	cout<<"pre_plane="<<pre_plane<<" plane = "<<plane<<", axis="<<axis<<", ind_axis="<<ind_axis<<endl;
 	float val;
 	for(int i=0; i<num_ver; i++){
-		val = countour[i][pre_plane];
-		countour[i][pre_plane] = countour[i][plane];
-		countour[i][plane] = val;
+		cout<<"el vertice era x="<<countour[i][X]<<", y="<<countour[i][Y]<<", z="<<countour[i][Z]<<endl;
+		//~ val = countour[i][ind_axis];
+		//~ countour[i][ind_axis] = countour[i][axis];
+		//~ countour[i][axis] = val;
+		countour[i][pre_plane] = countour[i][axis];
+		countour[i][axis] = countour[i][plane];
+		countour[i][plane] = 0.0f;
+		cout<<"el vertice ES x="<<countour[i][X]<<", y="<<countour[i][Y]<<", z="<<countour[i][Z]<<endl;
 	}
+	//~ for(int i=0; i<num_ver; i++){
+		//~ val = countour[i][pre_plane];
+		//~ countour[i][pre_plane] = countour[i][plane];
+		//~ countour[i][plane] = val;
+	//~ }
 }
 
 int RevolutionModel::getPlane(){	return plane;}

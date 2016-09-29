@@ -347,9 +347,9 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 		cout<<"generación por el eje "<<axis<<endl;
 		for(uint i=1; i<revs; i++){
 			for(uint j=0; j<count_num; j++){
-				vertices[cont][X] = countour[j][X]*cos(alpha);
-				vertices[cont][Y] = countour[j][Y];
-				vertices[cont][Z] = countour[j][X]*sin(alpha);
+				vertices[cont][ind_plane] = countour[j][ind_plane]*cos(alpha);
+				vertices[cont][axis] = countour[j][axis];
+				vertices[cont][plane] = countour[j][ind_plane]*sin(alpha);
 				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
 				cont++;
 			}
@@ -360,9 +360,9 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 		cout<<"generación por el eje "<<axis<<endl;
 		for(uint i=1; i<revs; i++){
 			for(uint j=0; j<count_num; j++){
-				vertices[cont][X] = countour[j][ind_plane]*cos(alpha);
-				vertices[cont][Y] = countour[j][Y];
-				vertices[cont][Z] = countour[j][ind_plane]*sin(alpha);
+				vertices[cont][ind_plane] = countour[j][ind_plane]*cos(alpha);
+				vertices[cont][axis] = countour[j][axis];
+				vertices[cont][plane] = countour[j][ind_plane]*sin(alpha);
 				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
 				cont++;
 			}
@@ -373,9 +373,9 @@ void Model::revolution(Tuple3r* vertices, Tuple3r* countour, uint count_num, uin
 		cout<<"generación por el eje "<<axis<<endl;
 		for(uint i=1; i<revs; i++){
 			for(uint j=0; j<count_num; j++){
-				vertices[cont][X] = countour[j][X]*cos(alpha);
-				vertices[cont][Y] = countour[j][Y];
-				vertices[cont][Z] = countour[j][X]*sin(alpha);
+				vertices[cont][ind_plane] = countour[j][ind_plane]*cos(alpha);
+				vertices[cont][axis] = countour[j][axis];
+				vertices[cont][plane] = countour[j][ind_plane]*sin(alpha);
 				cout<<"generar para cont="<<cont<<", x="<<vertices[cont][X]<<", y="<<vertices[cont][Y]<<", z="<<vertices[cont][Z]<<endl;
 				cont++;
 			}
