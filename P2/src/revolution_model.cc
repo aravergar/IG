@@ -200,7 +200,7 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[0][Z] = new_countour[0][Z];
 			break;
 	}
-	
+	cout<<"plane="<<plane<<", axis="<<axis<<", ind="<<3-(plane+axis)<<endl;
 	//~ switch(topol){
 		//~ case HOLLOW:
 		//~ case CONCAVE:
@@ -265,25 +265,31 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 			mesh->vertices[mesh->num_ver-1][Z] = new_countour[m-1][Z];
 			break;
 	}
-	
+	cout<<"plane="<<plane<<", axis="<<axis<<", ind="<<3-(plane+axis)<<endl;
 	cout<<"el objeto TIENE "<<mesh->num_ver<<" vértices y "<<mesh->num_tri<<" triángulos"<<endl;
-	
+	cout<<"plane="<<plane<<", axis="<<axis<<", ind="<<3-(plane+axis)<<endl;
 	//~ cout<<"su vertice inicial es X="<<mesh->vertices[0][X]<<", Y="<<mesh->vertices[0][Y]<<", Z="<<mesh->vertices[0][Z]<<endl;
 	//~ cout<<"vertice antepenultimo numero "<<mesh->num_ver-3<<" es X="<<mesh->vertices[mesh->num_ver-3][X]<<", Y="<<mesh->vertices[mesh->num_ver-3][Y]<<", Z="<<mesh->vertices[mesh->num_ver-3][Z]<<endl;
 	//~ cout<<"vertice penultimo numero "<<mesh->num_ver-2<<" es X="<<mesh->vertices[mesh->num_ver-2][X]<<", Y="<<mesh->vertices[mesh->num_ver-2][Y]<<", Z="<<mesh->vertices[mesh->num_ver-2][Z]<<endl;
 	//~ cout<<"y su vertice final numero "<<mesh->num_ver-1<<" es X="<<mesh->vertices[mesh->num_ver-1][X]<<", Y="<<mesh->vertices[mesh->num_ver-1][Y]<<", Z="<<mesh->vertices[mesh->num_ver-1][Z]<<endl;
 	
-	bool ccw = true;
+	cout<<"--------------------------------------"<<endl;
+	cout<<"PLANE = "<<plane<<" y AXIS = "<<axis<<", por lo que plane-1%3 es "<<(plane-1)%3<<endl;
+	bool ccw;
+	if(((plane-1)%3)==axis)	ccw=true;
+	else ccw=false;
+	//~ plane	axis	ccw		plane--	=axis?
+	//~ 0		1		false	2		false
+	//~ 0		2		true	2		true
+	//~ 1		0		true	0		true
+	//~ 1		2		false	0		false
+	//~ 2		0		false	1		false
+	//~ 2		1		true	1		true
 	
-	//~ plane	axis	ccw
-	//~ 0		1		true
-	//~ 0		2		false
-	//~ 1		0		true
-	//~ 1		2		false
-	//~ 2		0		true
-	//~ 2		1		true
-	
-	
+	//~ supuestamente hecho para
+	//~ 2		1
+	//~ (si eje es 1 menos que plano)
+	//~ siguiendo giro levógiro en los ejes cartesianos (X->Z, Z->Y, Y->X)
 	
 	// hay que rellenar los triangulos de la tapa superior...
 	// distinto para HOLLOW-CONCAVE que para CONVEX-CLOSED
