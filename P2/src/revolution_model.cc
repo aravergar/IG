@@ -13,7 +13,7 @@
 using namespace std;
 
 RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int revolutions, int axis){
-	// averiguar el plano en que se encuentra
+	// averiguar el plano en que se encuentra, esto hace que las otras dos dimensiones tengan que ser axis e ind
 	int pre_plane = test_plane(countour);
 	int m;
 	cout<<"el preplano es "<<pre_plane<<" y el plano es "<<plane<<endl;
@@ -24,9 +24,16 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 		if(plane == Z)	axis = X;
 		else	axis++;
 	}
-	
 	if(pre_plane!=plane){
 		change_plane(countour, num_ver, pre_plane, plane, axis);
+	}
+	if(axis!=Y && !(axis==Z && plane==Y)){
+		float val;
+		for(int i=0; i<num_ver; i++){
+			val = countour[i][3-(plane+axis)];
+			countour[i][3-(plane+axis)] = countour[i][axis];
+			countour[i][axis] = val;
+		}
 	}
 	
 	cout<<"el plano final es "<<plane<<endl;
@@ -275,10 +282,8 @@ RevolutionModel::RevolutionModel(Tuple3r *countour, int num_ver, int plane, int 
 	//~ 1		2		false
 	//~ 2		0		true
 	//~ 2		1		true
-					
-					
-					
-					
+	
+	
 	
 	// hay que rellenar los triangulos de la tapa superior...
 	// distinto para HOLLOW-CONCAVE que para CONVEX-CLOSED
@@ -424,6 +429,14 @@ void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane
 	//~ x2 y2 0
 	//~ x3 y3 0
 	
+	//~ el preplane es Z y el supuesto axis era Y
+	//~ ahora son plane y axis
+	//~ para mantener la forma hay que asegurar que:
+	//~ preplane	axis	ind
+	//~ 0			¿		?
+	
+	//~ plane		axis	ind
+	//~ 0					
 	
 	//~ plano Y
 	//~ eje X
@@ -439,9 +452,17 @@ void RevolutionModel::change_plane(Tuple3r *countour, int num_ver, int pre_plane
 		//~ val = countour[i][ind_axis];
 		//~ countour[i][ind_axis] = countour[i][axis];
 		//~ countour[i][axis] = val;
-		countour[i][pre_plane] = countour[i][axis];
-		countour[i][axis] = countour[i][plane];
+		
+		// NO conserva la forma
+		//~ countour[i][pre_plane] = countour[i][axis];
+		//~ countour[i][axis] = countour[i][plane];
+		//~ countour[i][plane] = 0.0f;
+		
+		// podré conservar la forma?
+		countour[i][pre_plane] = countour[i][plane];
+		//~ countour[i][axis] = countour[i][plane];
 		countour[i][plane] = 0.0f;
+		
 		cout<<"el vertice ES x="<<countour[i][X]<<", y="<<countour[i][Y]<<", z="<<countour[i][Z]<<endl;
 	}
 	//~ for(int i=0; i<num_ver; i++){

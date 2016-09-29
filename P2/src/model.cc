@@ -29,9 +29,9 @@ void Model::test(){
 
 void Model::draw(_render_mode mode, Color3r color1,
 	Color3r color2, int width){
-	//~ glEnable(GL_CULL_FACE);
-	//~ glCullFace(GL_FRONT);
-	//~ glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 	glColor3f(color1[r], color1[g], color1[b]);
 	switch(mode){
 	case VERTICES:
